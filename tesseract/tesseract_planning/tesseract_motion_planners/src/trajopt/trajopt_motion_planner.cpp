@@ -178,14 +178,17 @@ tesseract_common::StatusCode TrajOptMotionPlanner::solve(PlannerResponse& respon
   validator_ = std::make_shared<TrajectoryValidator>(continuous_manager, discrete_manager, length, verbose);
 
   tesseract_collision::ContactRequest request(tesseract_collision::ContactTestType::FIRST);
-  request.is_valid = [&](const tesseract_collision::ContactResult& res) {
-    Eigen::Vector2d coll_info =
-        config_->special_collision_constraint->getPairSafetyMarginData(res.link_names[0], res.link_names[1]);
-    if (res.distance < coll_info.x())
-      return true;
+  if(config_->special_collision_constraint)
+  {
+    request.is_valid = [&](const tesseract_collision::ContactResult& res) {
+      Eigen::Vector2d coll_info =
+          config_->special_collision_constraint->getPairSafetyMarginData(res.link_names[0], res.link_names[1]);
+      if (res.distance < coll_info.x())
+        return true;
 
-    return false;
-  };
+      return false;
+    };
+  }
   bool valid = validator_->trajectoryValid(getTraj(opt.x(), config_->prob->GetVars()),
                                            check_type,
                                            *state_solver,
