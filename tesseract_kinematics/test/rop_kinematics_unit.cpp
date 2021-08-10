@@ -31,46 +31,41 @@ inline opw_kinematics::Parameters<double> getOPWKinematicsParamABB()
   return opw_params;
 }
 
-tesseract_kinematics::ForwardKinematics::Ptr
-getRobotFwdKinematics(const tesseract_scene_graph::SceneGraph::Ptr& scene_graph)
+tesseract_kinematics::ForwardKinematics::UPtr
+getRobotFwdKinematics(const tesseract_scene_graph::SceneGraph& scene_graph)
 {
-  auto fwd_kin = std::make_shared<tesseract_kinematics::KDLFwdKinChain>();
+  auto fwd_kin = std::make_unique<tesseract_kinematics::KDLFwdKinChain>();
   EXPECT_TRUE(fwd_kin->init(scene_graph, "base_link", "tool0", "manip"));
   return fwd_kin;
 }
 
-tesseract_kinematics::ForwardKinematics::Ptr
-getFullFwdKinematics(const tesseract_scene_graph::SceneGraph::Ptr& scene_graph)
+tesseract_kinematics::ForwardKinematics::UPtr getFullFwdKinematics(const tesseract_scene_graph::SceneGraph& scene_graph)
 {
-  auto fwd_kin = std::make_shared<tesseract_kinematics::KDLFwdKinChain>();
+  auto fwd_kin = std::make_unique<tesseract_kinematics::KDLFwdKinChain>();
   EXPECT_TRUE(fwd_kin->init(scene_graph, "positioner_base_link", "tool0", "robot_on_positioner"));
   return fwd_kin;
 }
 
-tesseract_kinematics::ForwardKinematics::Ptr
-getPositionerFwdKinematics(const tesseract_scene_graph::SceneGraph::Ptr& scene_graph)
+tesseract_kinematics::ForwardKinematics::UPtr
+getPositionerFwdKinematics(const tesseract_scene_graph::SceneGraph& scene_graph)
 {
-  auto fwd_kin = std::make_shared<tesseract_kinematics::KDLFwdKinChain>();
+  auto fwd_kin = std::make_unique<tesseract_kinematics::KDLFwdKinChain>();
   EXPECT_TRUE(fwd_kin->init(scene_graph, "positioner_base_link", "positioner_tool0", "positioner"));
   return fwd_kin;
 }
 
-tesseract_kinematics::InverseKinematics::Ptr
-getFullInvKinematics(const tesseract_scene_graph::SceneGraph::Ptr& scene_graph)
+tesseract_kinematics::InverseKinematics::UPtr getFullInvKinematics(const tesseract_scene_graph::SceneGraph& scene_graph)
 {
   auto robot_fwd_kin = getRobotFwdKinematics(scene_graph);
 
   opw_kinematics::Parameters<double> opw_params = getOPWKinematicsParamABB();
 
-  auto opw_kin = std::make_shared<tesseract_kinematics::OPWInvKin>();
+  auto opw_kin = std::make_unique<tesseract_kinematics::OPWInvKin>();
   opw_kin->init("robot",
                 opw_params,
                 robot_fwd_kin->getBaseLinkName(),
-                robot_fwd_kin->getTipLinkName(),
-                robot_fwd_kin->getJointNames(),
-                robot_fwd_kin->getLinkNames(),
-                robot_fwd_kin->getActiveLinkNames(),
-                robot_fwd_kin->getLimits());
+                robot_fwd_kin->getTipLinkNames()[0],
+                robot_fwd_kin->getJointNames());
 
   auto positioner_kin = getPositionerFwdKinematics(scene_graph);
   Eigen::VectorXd positioner_resolution = Eigen::VectorXd::Constant(1, 1, 0.1);
