@@ -74,7 +74,7 @@ inline std::string locateResource(const std::string& url)
   return mod_url;
 }
 
-inline tesseract_scene_graph::SceneGraph::Ptr getSceneGraphIIWA()
+inline tesseract_scene_graph::SceneGraph::UPtr getSceneGraphIIWA()
 {
   std::string path = std::string(TESSERACT_SUPPORT_DIR) + "/urdf/lbr_iiwa_14_r820.urdf";
 
@@ -83,7 +83,7 @@ inline tesseract_scene_graph::SceneGraph::Ptr getSceneGraphIIWA()
   return tesseract_urdf::parseURDFFile(path, locator);
 }
 
-inline tesseract_scene_graph::SceneGraph::Ptr getSceneGraphABBExternalPositioner()
+inline tesseract_scene_graph::SceneGraph::UPtr getSceneGraphABBExternalPositioner()
 {
   std::string path = std::string(TESSERACT_SUPPORT_DIR) + "/urdf/abb_irb2400_external_positioner.urdf";
 
@@ -93,7 +93,7 @@ inline tesseract_scene_graph::SceneGraph::Ptr getSceneGraphABBExternalPositioner
   return tesseract_urdf::parseURDFFile(path, locator);
 }
 
-inline tesseract_scene_graph::SceneGraph::Ptr getSceneGraphABBOnPositioner()
+inline tesseract_scene_graph::SceneGraph::UPtr getSceneGraphABBOnPositioner()
 {
   std::string path = std::string(TESSERACT_SUPPORT_DIR) + "/urdf/abb_irb2400_on_positioner.urdf";
 
@@ -103,7 +103,7 @@ inline tesseract_scene_graph::SceneGraph::Ptr getSceneGraphABBOnPositioner()
   return tesseract_urdf::parseURDFFile(path, locator);
 }
 
-inline tesseract_scene_graph::SceneGraph::Ptr getSceneGraphABB()
+inline tesseract_scene_graph::SceneGraph::UPtr getSceneGraphABB()
 {
   std::string path = std::string(TESSERACT_SUPPORT_DIR) + "/urdf/abb_irb2400.urdf";
 

@@ -95,6 +95,27 @@ public:
             InverseKinematics::UPtr manipulator,
             double manipulator_reach,
             ForwardKinematics::UPtr positioner,
+            Eigen::VectorXd positioner_sample_resolution,
+            std::string name,
+            std::string solver_name = "RobotOnPositionerInvKin");
+
+  /**
+   * @brief Initializes Inverse Kinematics for a robot on a positioner
+   * @param scene_graph The Tesseract Scene Graph
+   * @param manipulator
+   * @param manipulator_reach
+   * @param positioner
+   * @param poitioner_sample_range
+   * @param positioner_sample_resolution
+   * @param name The name of the kinematic object
+   * @param solver_name The name given to the solver. This is exposed so you may have same solver with different
+   * sampling resolutions
+   * @return True if init() completes successfully
+   */
+  bool init(const tesseract_scene_graph::SceneGraph& scene_graph,
+            InverseKinematics::UPtr manipulator,
+            double manipulator_reach,
+            ForwardKinematics::UPtr positioner,
             Eigen::MatrixX2d poitioner_sample_range,
             Eigen::VectorXd positioner_sample_resolution,
             std::string name,

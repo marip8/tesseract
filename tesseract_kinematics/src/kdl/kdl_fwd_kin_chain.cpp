@@ -84,7 +84,7 @@ KDLFwdKinChain::calcFwdKinHelperAll(const Eigen::Ref<const Eigen::VectorXd>& joi
 
   for (unsigned int i = 1; i < kdl_data_.robot_chain.getNrOfSegments(); i++)
   {
-    const KDL::Segment& segment = kdl_data_.robot_chain.getSegment(j);
+    const KDL::Segment& segment = kdl_data_.robot_chain.getSegment(i);
     if (segment.getJoint().getType() != KDL::Joint::None)
     {
       kdl_pose = kdl_pose * segment.pose(kdl_joints(j));

@@ -537,7 +537,7 @@ private:
     tree_detector(bool& tree) : tree_(tree) {}
 
     template <class u, class g>
-    void discover_vertex(u vertex, g graph)
+    void discover_vertex(u vertex, const g& graph)
     {
       auto num_in_edges = static_cast<int>(boost::in_degree(vertex, graph));
 
@@ -566,7 +566,7 @@ private:
     }
 
     template <class e, class g>
-    void back_edge(e, g&)
+    void back_edge(e, const g&)
     {
       tree_ = false;
     }
@@ -581,7 +581,7 @@ private:
     children_detector(std::vector<std::string>& children) : children_(children) {}
 
     template <class u, class g>
-    void discover_vertex(u vertex, g graph)
+    void discover_vertex(u vertex, const g& graph)
     {
       children_.push_back(boost::get(boost::vertex_link, graph)[vertex]->getName());
     }

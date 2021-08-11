@@ -85,7 +85,7 @@ void RobotOnPositionerInvKin::nested_ik(IKSolutions& solutions,
                                         Eigen::VectorXd& positioner_pose,
                                         const Eigen::Ref<const Eigen::VectorXd>& seed) const
 {
-  if (loop_level >= static_cast<int>(positioner_fwd_kin_->numJoints()))
+  if (loop_level >= positioner_fwd_kin_->numJoints())
   {
     ikAt(solutions, target_pose, positioner_pose, seed);
     return;
@@ -134,7 +134,7 @@ IKSolutions RobotOnPositionerInvKin::calcInvKin(const Eigen::Isometry3d& pose,
                                                 const Eigen::Ref<const Eigen::VectorXd>& seed) const
 {
   assert(checkInitialized());
-  assert(working_frame == positioner_tip_link_);
+  assert(working_frame == positioner_fwd_kin_->getBaseLinkName());
   assert(link_name == manip_tip_link_);
 
   return calcInvKinHelper(pose, seed);
@@ -164,6 +164,47 @@ bool RobotOnPositionerInvKin::checkInitialized() const
   }
 
   return initialized_;
+}
+
+bool RobotOnPositionerInvKin::init(const tesseract_scene_graph::SceneGraph& scene_graph,
+                                   InverseKinematics::UPtr manipulator,
+                                   double manipulator_reach,
+                                   ForwardKinematics::UPtr positioner,
+                                   Eigen::VectorXd positioner_sample_resolution,
+                                   std::string name,
+                                   std::string solver_name)
+{
+  if (positioner == nullptr)
+  {
+    CONSOLE_BRIDGE_logError("Provided positioner is a nullptr");
+    return false;
+  }
+
+  if (!scene_graph.getLink(scene_graph.getRoot()))
+  {
+    CONSOLE_BRIDGE_logError("The scene graph has an invalid root.");
+    return false;
+  }
+
+  std::vector<std::string> joint_names = positioner->getJointNames();
+  auto s = static_cast<Eigen::Index>(joint_names.size());
+  Eigen::MatrixX2d positioner_limits;
+  positioner_limits.resize(s, 2);
+  for (Eigen::Index i = 0; i < s; ++i)
+  {
+    auto joint = scene_graph.getJoint(joint_names[static_cast<std::size_t>(i)]);
+    positioner_limits(i, 0) = joint->limits->lower;
+    positioner_limits(i, 1) = joint->limits->upper;
+  }
+
+  return init(scene_graph,
+              std::move(manipulator),
+              manipulator_reach,
+              std::move(positioner),
+              positioner_limits,
+              positioner_sample_resolution,
+              name,
+              solver_name);
 }
 
 bool RobotOnPositionerInvKin::init(const tesseract_scene_graph::SceneGraph& scene_graph,
@@ -217,7 +258,6 @@ bool RobotOnPositionerInvKin::init(const tesseract_scene_graph::SceneGraph& scen
   if (positioner->getTipLinkNames()[0] != manipulator->getBaseLinkName())
   {
     CONSOLE_BRIDGE_logWarn("Positioner tip link is not the base link of the manipulator.");
-    return false;
   }
 
   for (long i = 0; i < positioner_sample_resolution.size(); ++i)
