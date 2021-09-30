@@ -1,0 +1,11 @@
+<map id="tesseract_common/include/tesseract_common/class_loader.h" name="tesseract_common/include/tesseract_common/class_loader.h">
+<area shape="rect" id="node1" title="Class Loader to be used throughout Tesseract for loading plugins." alt="" coords="335,5,513,61"/>
+<area shape="rect" id="node2" href="$d5/dac/class__loader_8hpp.html" title="Class Loader to be used throughout Tesseract for loading plugins." alt="" coords="5,109,184,165"/>
+<area shape="rect" id="node3" href="$d1/d2f/plugin__loader_8hpp.html" title="Plugin Loader to be used throughout Tesseract for loading plugins." alt="" coords="208,109,387,165"/>
+<area shape="rect" id="node5" href="$da/dd2/plugin__loader__unit_8cpp.html" title=" " alt="" coords="278,325,437,366"/>
+<area shape="rect" id="node7" href="$d3/da9/visualization__loader_8cpp.html" title=" " alt="" coords="221,421,406,463"/>
+<area shape="rect" id="node8" href="$d6/d3b/test__plugin__multiply_8cpp.html" title="Plugin Test plugin class." alt="" coords="513,117,677,158"/>
+<area shape="rect" id="node9" href="$d6/dbe/tesseract__ignition__visualization_8cpp.html" title=" " alt="" coords="701,109,873,165"/>
+<area shape="rect" id="node4" href="$de/db6/plugin__loader_8h.html" title="Plugin Loader to be used throughout Tesseract for loading plugins." alt="" coords="208,213,387,269"/>
+<area shape="rect" id="node6" href="$da/d93/visualization__loader_8h.html" title="Visualization Loader." alt="" coords="51,317,253,373"/>
+</map>

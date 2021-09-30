@@ -1,0 +1,8 @@
+<map id="tesseract_visualization::VisualizationLoader" name="tesseract_visualization::VisualizationLoader">
+<area shape="rect" id="node1" title="This is used to dynamically load tesseract visualizer. This class must remain around for the life of ..." alt="" coords="857,57,1012,98"/>
+<area shape="rect" id="node2" href="$d1/da5/classtesseract__common_1_1PluginLoader.html" title="This is a utility class for loading plugins within Tesseract." alt="" coords="633,57,808,98"/>
+<area shape="rect" id="node3" title=" " alt="" coords="179,64,257,91"/>
+<area shape="rect" id="node5" title=" " alt="" coords="366,49,501,105"/>
+<area shape="rect" id="node6" title=" " alt="" coords="363,129,504,156"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,57,129,98"/>
+</map>

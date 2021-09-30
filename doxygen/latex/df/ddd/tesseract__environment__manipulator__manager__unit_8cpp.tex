@@ -1,0 +1,245 @@
+\hypertarget{tesseract__environment__manipulator__manager__unit_8cpp}{}\doxysection{tesseract\+\_\+environment/test/tesseract\+\_\+environment\+\_\+manipulator\+\_\+manager\+\_\+unit.cpp File Reference}
+\label{tesseract__environment__manipulator__manager__unit_8cpp}\index{tesseract\_environment/test/tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment/test/tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+{\ttfamily \#include $<$tesseract\+\_\+common/macros.\+h$>$}\newline
+{\ttfamily \#include $<$gtest/gtest.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+urdf/urdf\+\_\+parser.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+scene\+\_\+graph/resource\+\_\+locator.\+h$>$}\newline
+{\ttfamily \#include $<$tesseract\+\_\+environment/core/manipulator\+\_\+manager.\+h$>$}\newline
+Include dependency graph for tesseract\+\_\+environment\+\_\+manipulator\+\_\+manager\+\_\+unit.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{d5/d0f/tesseract__environment__manipulator__manager__unit_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87}{ABBConfig}} \{ \newline
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}{ROBOT\+\_\+\+ONLY}}
+, \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a6f1ddae6849ed1acb8e4d668c4a5382a}{ROBOT\+\_\+\+ON\+\_\+\+RAIL}}
+, \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a01b4ecf9d5d61f8e9144d62e99e98b86}{ROBOT\+\_\+\+WITH\+\_\+\+POSITIONER}}
+, \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}{ROBOT\+\_\+\+ONLY}}
+, \newline
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a6f1ddae6849ed1acb8e4d668c4a5382a}{ROBOT\+\_\+\+ON\+\_\+\+RAIL}}
+, \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a01b4ecf9d5d61f8e9144d62e99e98b86}{ROBOT\+\_\+\+WITH\+\_\+\+POSITIONER}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_ad43b67aac2fb3de014c67c88f9dc4db9}{locate\+Resource}} (const std\+::string \&url)
+\item 
+\mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_a4421b8568bd664cf203613a054e1847b}{tesseract\+\_\+scene\+\_\+graph\+::\+Scene\+Graph\+::\+Ptr}} \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a91c443b5f262df8160203696a296bb75}{get\+Scene\+Graph}} (\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87}{ABBConfig}} config=\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}{ABBConfig\+::\+ROBOT\+\_\+\+ONLY}})
+\item 
+\mbox{\hyperlink{classtesseract__srdf_1_1SRDFModel_aa774b8f688b3521f25ea1a6d4e16839c}{SRDFModel\+::\+Ptr}} \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_abe63be4abb77a31efd3a3a134b6efaf4}{get\+SRDFModel}} (const \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_a4421b8568bd664cf203613a054e1847b}{Scene\+Graph\+::\+Ptr}} \&scene\+\_\+graph, \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87}{ABBConfig}} config=\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}{ABBConfig\+::\+ROBOT\+\_\+\+ONLY}})
+\item 
+void \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a4e8581afcab824aa65f6be4a95978c8b}{run\+Check\+Available\+Solvers}} (\mbox{\hyperlink{classtesseract__environment_1_1ManipulatorManager}{Manipulator\+Manager}} \&manager)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a5a040994e267e8686050c9657c5b04fb}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Robot\+On\+Positioner\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a81fd0c9c4968bb331d653db663b371eb}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Robot\+With\+External\+Positioner\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a7bf02fe2a5e473ae7ae85e3d51f1b30e}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Add\+Remove\+Chain\+Group\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_adfaf664df45f760b651ae1cbee493332}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Add\+Remove\+Joint\+Group\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a7fb2fb405003f54513061977504cfb24}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Add\+Remove\+Link\+Group\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_ae8cf17c756efd476435f680aab4a9eda}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Add\+Remove\+ROPKinematics\+Solver\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a252e23e7d97abda1a36102f65e58e836}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Add\+Remove\+REPKinematics\+Solver\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a814d8bacce1a47948ea8185be335f12c}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Add\+Remove\+OPWKinematics\+Solver\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a49e5e4bd0b5b63e93dc877089cc1cf5f}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Add\+Remove\+Group\+Joint\+State\+Unit)
+\item 
+\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_ae0381ff5137b3102de1fb7558d695bed}{TEST}} (Tesseract\+Environment\+Manipulator\+Manager\+Unit, Add\+Remove\+Group\+TCPUnit)
+\item 
+int \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87}\label{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!ABBConfig@{ABBConfig}}
+\index{ABBConfig@{ABBConfig}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{ABBConfig}{ABBConfig}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87}{ABBConfig}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ROBOT\_ONLY@{ROBOT\_ONLY}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!ROBOT\_ONLY@{ROBOT\_ONLY}}}\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}\label{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}} 
+ROBOT\+\_\+\+ONLY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ROBOT\_ON\_RAIL@{ROBOT\_ON\_RAIL}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!ROBOT\_ON\_RAIL@{ROBOT\_ON\_RAIL}}}\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a6f1ddae6849ed1acb8e4d668c4a5382a}\label{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a6f1ddae6849ed1acb8e4d668c4a5382a}} 
+ROBOT\+\_\+\+ON\+\_\+\+RAIL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ROBOT\_WITH\_POSITIONER@{ROBOT\_WITH\_POSITIONER}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!ROBOT\_WITH\_POSITIONER@{ROBOT\_WITH\_POSITIONER}}}\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a01b4ecf9d5d61f8e9144d62e99e98b86}\label{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a01b4ecf9d5d61f8e9144d62e99e98b86}} 
+ROBOT\+\_\+\+WITH\+\_\+\+POSITIONER&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ROBOT\_ONLY@{ROBOT\_ONLY}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!ROBOT\_ONLY@{ROBOT\_ONLY}}}\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}\label{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}} 
+ROBOT\+\_\+\+ONLY&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ROBOT\_ON\_RAIL@{ROBOT\_ON\_RAIL}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!ROBOT\_ON\_RAIL@{ROBOT\_ON\_RAIL}}}\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a6f1ddae6849ed1acb8e4d668c4a5382a}\label{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a6f1ddae6849ed1acb8e4d668c4a5382a}} 
+ROBOT\+\_\+\+ON\+\_\+\+RAIL&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{ROBOT\_WITH\_POSITIONER@{ROBOT\_WITH\_POSITIONER}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!ROBOT\_WITH\_POSITIONER@{ROBOT\_WITH\_POSITIONER}}}\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a01b4ecf9d5d61f8e9144d62e99e98b86}\label{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a01b4ecf9d5d61f8e9144d62e99e98b86}} 
+ROBOT\+\_\+\+WITH\+\_\+\+POSITIONER&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a91c443b5f262df8160203696a296bb75}\label{tesseract__environment__manipulator__manager__unit_8cpp_a91c443b5f262df8160203696a296bb75}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!getSceneGraph@{getSceneGraph}}
+\index{getSceneGraph@{getSceneGraph}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{getSceneGraph()}{getSceneGraph()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_a4421b8568bd664cf203613a054e1847b}{tesseract\+\_\+scene\+\_\+graph\+::\+Scene\+Graph\+::\+Ptr}} get\+Scene\+Graph (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87}{ABBConfig}}}]{config = {\ttfamily \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}{ABBConfig\+::\+ROBOT\+\_\+\+ONLY}}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_abe63be4abb77a31efd3a3a134b6efaf4}\label{tesseract__environment__manipulator__manager__unit_8cpp_abe63be4abb77a31efd3a3a134b6efaf4}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!getSRDFModel@{getSRDFModel}}
+\index{getSRDFModel@{getSRDFModel}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{getSRDFModel()}{getSRDFModel()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classtesseract__srdf_1_1SRDFModel_aa774b8f688b3521f25ea1a6d4e16839c}{SRDFModel\+::\+Ptr}} get\+SRDFModel (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_a4421b8568bd664cf203613a054e1847b}{Scene\+Graph\+::\+Ptr}} \&}]{scene\+\_\+graph,  }\item[{\mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87}{ABBConfig}}}]{config = {\ttfamily \mbox{\hyperlink{tesseract__environment__manipulator__manager__unit_8cpp_a3b3fec2e8c7c4ff588bfa02e49a9fe87a23f1d603ffec8d93bddcab459541e3f4}{ABBConfig\+::\+ROBOT\+\_\+\+ONLY}}} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_ad43b67aac2fb3de014c67c88f9dc4db9}\label{tesseract__environment__manipulator__manager__unit_8cpp_ad43b67aac2fb3de014c67c88f9dc4db9}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!locateResource@{locateResource}}
+\index{locateResource@{locateResource}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{locateResource()}{locateResource()}}
+{\footnotesize\ttfamily std\+::string locate\+Resource (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{url }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{tesseract__environment__manipulator__manager__unit_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!main@{main}}
+\index{main@{main}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a4e8581afcab824aa65f6be4a95978c8b}\label{tesseract__environment__manipulator__manager__unit_8cpp_a4e8581afcab824aa65f6be4a95978c8b}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!runCheckAvailableSolvers@{runCheckAvailableSolvers}}
+\index{runCheckAvailableSolvers@{runCheckAvailableSolvers}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{runCheckAvailableSolvers()}{runCheckAvailableSolvers()}}
+{\footnotesize\ttfamily void run\+Check\+Available\+Solvers (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classtesseract__environment_1_1ManipulatorManager}{Manipulator\+Manager}} \&}]{manager }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a7bf02fe2a5e473ae7ae85e3d51f1b30e}\label{tesseract__environment__manipulator__manager__unit_8cpp_a7bf02fe2a5e473ae7ae85e3d51f1b30e}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [1/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Add\+Remove\+Chain\+Group\+Unit}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000012}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000013}{Todo}}]check that solver was removed \end{DoxyRefDesc}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a49e5e4bd0b5b63e93dc877089cc1cf5f}\label{tesseract__environment__manipulator__manager__unit_8cpp_a49e5e4bd0b5b63e93dc877089cc1cf5f}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [2/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Add\+Remove\+Group\+Joint\+State\+Unit}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_ae0381ff5137b3102de1fb7558d695bed}\label{tesseract__environment__manipulator__manager__unit_8cpp_ae0381ff5137b3102de1fb7558d695bed}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [3/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Add\+Remove\+Group\+TCPUnit}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_adfaf664df45f760b651ae1cbee493332}\label{tesseract__environment__manipulator__manager__unit_8cpp_adfaf664df45f760b651ae1cbee493332}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [4/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Add\+Remove\+Joint\+Group\+Unit}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000014}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000015}{Todo}}]check that solver was removed \end{DoxyRefDesc}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a7fb2fb405003f54513061977504cfb24}\label{tesseract__environment__manipulator__manager__unit_8cpp_a7fb2fb405003f54513061977504cfb24}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [5/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Add\+Remove\+Link\+Group\+Unit}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000016}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000017}{Todo}}]check that solver was removed \end{DoxyRefDesc}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a814d8bacce1a47948ea8185be335f12c}\label{tesseract__environment__manipulator__manager__unit_8cpp_a814d8bacce1a47948ea8185be335f12c}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [6/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Add\+Remove\+OPWKinematics\+Solver\+Unit}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000022}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000023}{Todo}}]check that solver was removed \end{DoxyRefDesc}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a252e23e7d97abda1a36102f65e58e836}\label{tesseract__environment__manipulator__manager__unit_8cpp_a252e23e7d97abda1a36102f65e58e836}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [7/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Add\+Remove\+REPKinematics\+Solver\+Unit}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000020}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000021}{Todo}}]check that solver was removed \end{DoxyRefDesc}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_ae8cf17c756efd476435f680aab4a9eda}\label{tesseract__environment__manipulator__manager__unit_8cpp_ae8cf17c756efd476435f680aab4a9eda}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [8/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Add\+Remove\+ROPKinematics\+Solver\+Unit}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000018}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000019}{Todo}}]check that solver was removed \end{DoxyRefDesc}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a5a040994e267e8686050c9657c5b04fb}\label{tesseract__environment__manipulator__manager__unit_8cpp_a5a040994e267e8686050c9657c5b04fb}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [9/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Robot\+On\+Positioner\+Unit}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000006}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000007}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000008}{Todo}}]check for solver \end{DoxyRefDesc}
+\mbox{\Hypertarget{tesseract__environment__manipulator__manager__unit_8cpp_a81fd0c9c4968bb331d653db663b371eb}\label{tesseract__environment__manipulator__manager__unit_8cpp_a81fd0c9c4968bb331d653db663b371eb}} 
+\index{tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}!TEST@{TEST}}
+\index{TEST@{TEST}!tesseract\_environment\_manipulator\_manager\_unit.cpp@{tesseract\_environment\_manipulator\_manager\_unit.cpp}}
+\doxysubsubsection{\texorpdfstring{TEST()}{TEST()}\hspace{0.1cm}{\footnotesize\ttfamily [10/10]}}
+{\footnotesize\ttfamily TEST (\begin{DoxyParamCaption}\item[{Tesseract\+Environment\+Manipulator\+Manager\+Unit}]{,  }\item[{Robot\+With\+External\+Positioner\+Unit}]{ }\end{DoxyParamCaption})}
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000009}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000010}{Todo}}]check for solver \end{DoxyRefDesc}
+
+
+\begin{DoxyRefDesc}{Todo}
+\item[\mbox{\hyperlink{todo__todo000011}{Todo}}]check for solver \end{DoxyRefDesc}

@@ -1,0 +1,320 @@
+\hypertarget{namespacetesseract__scene__graph}{}\doxysection{tesseract\+\_\+scene\+\_\+graph Namespace Reference}
+\label{namespacetesseract__scene__graph}\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1AllowedCollisionMatrix}{Allowed\+Collision\+Matrix}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{Scene\+Graph}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1JointDynamics}{Joint\+Dynamics}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1JointLimits}{Joint\+Limits}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1JointSafety}{Joint\+Safety}}
+\begin{DoxyCompactList}\small\item\em Parameters for \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} Safety Controllers. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1JointCalibration}{Joint\+Calibration}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1JointMimic}{Joint\+Mimic}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1Material}{Material}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1Inertial}{Inertial}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1Visual}{Visual}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1Collision}{Collision}}
+\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1Link}{Link}}
+\item 
+struct \mbox{\hyperlink{structtesseract__scene__graph_1_1kdl__tree__builder}{kdl\+\_\+tree\+\_\+builder}}
+\begin{DoxyCompactList}\small\item\em Everytime a vertex is visited for the first time add a new segment to the KDL Tree;. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1ResourceLocator}{Resource\+Locator}}
+\begin{DoxyCompactList}\small\item\em Abstract class for resource loaders. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1SimpleResourceLocator}{Simple\+Resource\+Locator}}
+\begin{DoxyCompactList}\small\item\em Resource locator implementation using a provided function to locate file resources. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classtesseract__scene__graph_1_1SimpleLocatedResource}{Simple\+Located\+Resource}}
+\begin{DoxyCompactList}\small\item\em Resource implementation for a local file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{namespacetesseract__scene__graph_a40a7b2e03fe5365f09dd8c309b6bcffb}{Allowed\+Collision\+Entries}} = std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{namespacetesseract__common_a5b28b7ae665b374a7ca166d496f648ce}{tesseract\+\_\+common\+::\+Link\+Names\+Pair}}, std\+::string, \mbox{\hyperlink{structtesseract__common_1_1PairHash}{tesseract\+\_\+common\+::\+Pair\+Hash}} $>$
+\item 
+using \mbox{\hyperlink{namespacetesseract__scene__graph_a8a54db22a9b9c10174389d74fc6a46bc}{Graph\+Property}} = boost\+::property$<$ boost\+::graph\+\_\+name\+\_\+t, std\+::string, boost\+::property$<$ \mbox{\hyperlink{namespaceboost_ab3ffe54ba2693f8e8e5e709d8a425f65}{boost\+::graph\+\_\+root\+\_\+t}}, std\+::string $>$ $>$
+\begin{DoxyCompactList}\small\item\em Defines the boost graph property. \end{DoxyCompactList}\item 
+using \mbox{\hyperlink{namespacetesseract__scene__graph_a87d88949e8773cc1ab1a583b4bc6824f}{Vertex\+Property}} = boost\+::property$<$ \mbox{\hyperlink{namespaceboost_ab951500554c258d05de53b1a9e47c6f7}{boost\+::vertex\+\_\+link\+\_\+t}}, \mbox{\hyperlink{classtesseract__scene__graph_1_1Link_a424c06b5c02fe0b92fee449ef1190bf0}{Link\+::\+Ptr}}, boost\+::property$<$ \mbox{\hyperlink{namespaceboost_a662376eac1c00e8974a26749f83d93ce}{boost\+::vertex\+\_\+link\+\_\+visible\+\_\+t}}, bool, boost\+::property$<$ \mbox{\hyperlink{namespaceboost_afeaae59a22dd08541ea42fe3095b2b13}{boost\+::vertex\+\_\+link\+\_\+collision\+\_\+enabled\+\_\+t}}, bool $>$ $>$$>$
+\begin{DoxyCompactList}\small\item\em Defines the boost graph vertex property. \end{DoxyCompactList}\item 
+using \mbox{\hyperlink{namespacetesseract__scene__graph_a9dc21bc544723df21ec27052717c4e1e}{Edge\+Property}} = boost\+::property$<$ \mbox{\hyperlink{namespaceboost_a5bdec37849f299741830b4d2fc9f93aa}{boost\+::edge\+\_\+joint\+\_\+t}}, \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a9e557626dd69e69cebfd3ad516cfcd85}{Joint\+::\+Ptr}}, boost\+::property$<$ boost\+::edge\+\_\+weight\+\_\+t, double $>$ $>$
+\begin{DoxyCompactList}\small\item\em Edge\+Property. \end{DoxyCompactList}\item 
+using \mbox{\hyperlink{namespacetesseract__scene__graph_acbaf9f6ad6831a8d42a5ece9f2d611a2}{Graph}} = boost\+::adjacency\+\_\+list$<$ boost\+::listS, boost\+::listS, boost\+::bidirectionalS, \mbox{\hyperlink{namespacetesseract__scene__graph_a87d88949e8773cc1ab1a583b4bc6824f}{Vertex\+Property}}, \mbox{\hyperlink{namespacetesseract__scene__graph_a9dc21bc544723df21ec27052717c4e1e}{Edge\+Property}}, \mbox{\hyperlink{namespacetesseract__scene__graph_a8a54db22a9b9c10174389d74fc6a46bc}{Graph\+Property}} $>$
+\item 
+using \mbox{\hyperlink{namespacetesseract__scene__graph_a69d7f23b6559723bd757a453bda40714}{Simple\+Resource\+Locator\+Fn}} = std\+::function$<$ std\+::string(const std\+::string \&)$>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16}{Joint\+Type}} \{ \newline
+\mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a696b031073e74bf2cb98e5ef201d4aa3}{UNKNOWN}}
+, \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a06ec593fa63e118e8d2d0fd58c223acf}{REVOLUTE}}
+, \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ab1fa9dd3af034b3ef4291579aa673c07}{CONTINUOUS}}
+, \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16aace8e17dd1560c692929800de207e902}{PRISMATIC}}
+, \newline
+\mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a8bc27034f643005ec2eb9133de22220e}{FLOATING}}
+, \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a537304b851a585f4a26b71f5c40ce40b}{PLANAR}}
+, \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}{FIXED}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespacetesseract__scene__graph_a8282e1e01e7595b9ae8ce47813ccf35d}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_a52654d2ec93d3faa655f811c4bc72bed}{Scene\+Graph\+::\+Path}} \&path)
+\item 
+std\+::ostream \& \mbox{\hyperlink{namespacetesseract__scene__graph_a889d2454755511e4d1878c948a3f7942}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16}{Joint\+Type}} \&type)
+\item 
+KDL\+::\+Frame \mbox{\hyperlink{namespacetesseract__scene__graph_a9f0ce2dde1dfc29ac92461d216bb82a8}{convert}} (const Eigen\+::\+Isometry3d \&transform)
+\begin{DoxyCompactList}\small\item\em Convert Eigen\+::\+Isometry3d to KDL\+::\+Frame. \end{DoxyCompactList}\item 
+KDL\+::\+Vector \mbox{\hyperlink{namespacetesseract__scene__graph_a2b1998c47fe8c81fdada6a5f7c28581d}{convert}} (const Eigen\+::\+Vector3d \&\mbox{\hyperlink{vhacdRaycastMesh_8cpp_adcf134d50025cc52907d0c8ac798d89d}{vector}})
+\begin{DoxyCompactList}\small\item\em Convert Eigen\+::\+Isometry3d to KDL\+::\+Frame. \end{DoxyCompactList}\item 
+KDL\+::\+Joint \mbox{\hyperlink{namespacetesseract__scene__graph_aa77add93f95a664b924ff3067128eb15}{convert}} (const \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a705d1f0a066833444550aa0c7f6d16b9}{Joint\+::\+Const\+Ptr}} \&joint)
+\begin{DoxyCompactList}\small\item\em Convert Tesseract \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} to KDL \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}}. \end{DoxyCompactList}\item 
+KDL\+::\+Rigid\+Body\+Inertia \mbox{\hyperlink{namespacetesseract__scene__graph_aecc9b2b45d0f05eaa5afa16a5c99729a}{convert}} (const \mbox{\hyperlink{classtesseract__scene__graph_1_1Inertial_a460e182afe4ea7ff68c9855afa89f68b}{Inertial\+::\+Const\+Ptr}} \&inertial)
+\begin{DoxyCompactList}\small\item\em Convert Tesseract Inertail to KDL \mbox{\hyperlink{classtesseract__scene__graph_1_1Inertial}{Inertial}}. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacetesseract__scene__graph_a7132480e5402ba4a3c44d4dc09712c0a}{parse\+Scene\+Graph}} (const \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{Scene\+Graph}} \&scene\+\_\+graph, KDL\+::\+Tree \&tree)
+\begin{DoxyCompactList}\small\item\em Convert a Tesseract \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{Scene\+Graph}} into a KDL Tree If graph is not a tree it will return false. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{vhacdRaycastMesh_8cpp_adcf134d50025cc52907d0c8ac798d89d}{std\+::vector}}$<$ std\+::string $>$ \mbox{\hyperlink{namespacetesseract__scene__graph_ac2abd4b3afef22a092ab25d0104a22e4}{get\+Allowed\+Collisions}} (const \mbox{\hyperlink{vhacdRaycastMesh_8cpp_adcf134d50025cc52907d0c8ac798d89d}{std\+::vector}}$<$ std\+::string $>$ \&link\+\_\+names, const \mbox{\hyperlink{namespacetesseract__scene__graph_a40a7b2e03fe5365f09dd8c309b6bcffb}{Allowed\+Collision\+Entries}} \&acm\+\_\+entries, bool remove\+\_\+duplicates=true)
+\begin{DoxyCompactList}\small\item\em Gets allowed collisions for a set of link names. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+static auto \mbox{\hyperlink{namespacetesseract__scene__graph_a2c50647f73070577a0bd18924a9eef34}{DEFAULT\+\_\+\+TESSERACT\+\_\+\+MATERIAL}} = std\+::make\+\_\+shared$<$\mbox{\hyperlink{classtesseract__scene__graph_1_1Material}{Material}}$>$(\char`\"{}default\+\_\+tesseract\+\_\+material\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a40a7b2e03fe5365f09dd8c309b6bcffb}\label{namespacetesseract__scene__graph_a40a7b2e03fe5365f09dd8c309b6bcffb}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!AllowedCollisionEntries@{AllowedCollisionEntries}}
+\index{AllowedCollisionEntries@{AllowedCollisionEntries}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{AllowedCollisionEntries}{AllowedCollisionEntries}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesseract__scene__graph_a40a7b2e03fe5365f09dd8c309b6bcffb}{tesseract\+\_\+scene\+\_\+graph\+::\+Allowed\+Collision\+Entries}} = typedef std\+::unordered\+\_\+map$<$\mbox{\hyperlink{namespacetesseract__common_a5b28b7ae665b374a7ca166d496f648ce}{tesseract\+\_\+common\+::\+Link\+Names\+Pair}}, std\+::string, \mbox{\hyperlink{structtesseract__common_1_1PairHash}{tesseract\+\_\+common\+::\+Pair\+Hash}}$>$}
+
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a9dc21bc544723df21ec27052717c4e1e}\label{namespacetesseract__scene__graph_a9dc21bc544723df21ec27052717c4e1e}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!EdgeProperty@{EdgeProperty}}
+\index{EdgeProperty@{EdgeProperty}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{EdgeProperty}{EdgeProperty}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesseract__scene__graph_a9dc21bc544723df21ec27052717c4e1e}{tesseract\+\_\+scene\+\_\+graph\+::\+Edge\+Property}} = typedef boost\+::property$<$\mbox{\hyperlink{namespaceboost_a5bdec37849f299741830b4d2fc9f93aa}{boost\+::edge\+\_\+joint\+\_\+t}}, \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a9e557626dd69e69cebfd3ad516cfcd85}{Joint\+::\+Ptr}}, boost\+::property$<$boost\+::edge\+\_\+weight\+\_\+t, double$>$ $>$}
+
+
+
+Edge\+Property. 
+
+The edge\+\_\+weight represents the distance between the two links \mbox{\Hypertarget{namespacetesseract__scene__graph_acbaf9f6ad6831a8d42a5ece9f2d611a2}\label{namespacetesseract__scene__graph_acbaf9f6ad6831a8d42a5ece9f2d611a2}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!Graph@{Graph}}
+\index{Graph@{Graph}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{Graph}{Graph}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesseract__scene__graph_acbaf9f6ad6831a8d42a5ece9f2d611a2}{tesseract\+\_\+scene\+\_\+graph\+::\+Graph}} = typedef boost\+:: adjacency\+\_\+list$<$boost\+::listS, boost\+::listS, boost\+::bidirectionalS, \mbox{\hyperlink{namespacetesseract__scene__graph_a87d88949e8773cc1ab1a583b4bc6824f}{Vertex\+Property}}, \mbox{\hyperlink{namespacetesseract__scene__graph_a9dc21bc544723df21ec27052717c4e1e}{Edge\+Property}}, \mbox{\hyperlink{namespacetesseract__scene__graph_a8a54db22a9b9c10174389d74fc6a46bc}{Graph\+Property}}$>$}
+
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a8a54db22a9b9c10174389d74fc6a46bc}\label{namespacetesseract__scene__graph_a8a54db22a9b9c10174389d74fc6a46bc}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!GraphProperty@{GraphProperty}}
+\index{GraphProperty@{GraphProperty}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{GraphProperty}{GraphProperty}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesseract__scene__graph_a8a54db22a9b9c10174389d74fc6a46bc}{tesseract\+\_\+scene\+\_\+graph\+::\+Graph\+Property}} = typedef boost\+::property$<$boost\+::graph\+\_\+name\+\_\+t, std\+::string, boost\+::property$<$\mbox{\hyperlink{namespaceboost_ab3ffe54ba2693f8e8e5e709d8a425f65}{boost\+::graph\+\_\+root\+\_\+t}}, std\+::string$>$ $>$}
+
+
+
+Defines the boost graph property. 
+
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a69d7f23b6559723bd757a453bda40714}\label{namespacetesseract__scene__graph_a69d7f23b6559723bd757a453bda40714}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!SimpleResourceLocatorFn@{SimpleResourceLocatorFn}}
+\index{SimpleResourceLocatorFn@{SimpleResourceLocatorFn}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{SimpleResourceLocatorFn}{SimpleResourceLocatorFn}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesseract__scene__graph_a69d7f23b6559723bd757a453bda40714}{tesseract\+\_\+scene\+\_\+graph\+::\+Simple\+Resource\+Locator\+Fn}} = typedef std\+::function$<$std\+::string(const std\+::string\&)$>$}
+
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a87d88949e8773cc1ab1a583b4bc6824f}\label{namespacetesseract__scene__graph_a87d88949e8773cc1ab1a583b4bc6824f}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!VertexProperty@{VertexProperty}}
+\index{VertexProperty@{VertexProperty}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{VertexProperty}{VertexProperty}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{namespacetesseract__scene__graph_a87d88949e8773cc1ab1a583b4bc6824f}{tesseract\+\_\+scene\+\_\+graph\+::\+Vertex\+Property}} = typedef boost\+::property$<$ \mbox{\hyperlink{namespaceboost_ab951500554c258d05de53b1a9e47c6f7}{boost\+::vertex\+\_\+link\+\_\+t}}, \mbox{\hyperlink{classtesseract__scene__graph_1_1Link_a424c06b5c02fe0b92fee449ef1190bf0}{Link\+::\+Ptr}}, boost\+::property$<$\mbox{\hyperlink{namespaceboost_a662376eac1c00e8974a26749f83d93ce}{boost\+::vertex\+\_\+link\+\_\+visible\+\_\+t}}, bool, boost\+::property$<$\mbox{\hyperlink{namespaceboost_afeaae59a22dd08541ea42fe3095b2b13}{boost\+::vertex\+\_\+link\+\_\+collision\+\_\+enabled\+\_\+t}}, bool$>$ $>$$>$}
+
+
+
+Defines the boost graph vertex property. 
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16}\label{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!JointType@{JointType}}
+\index{JointType@{JointType}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{JointType}{JointType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16}{tesseract\+\_\+scene\+\_\+graph\+::\+Joint\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{UNKNOWN@{UNKNOWN}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!UNKNOWN@{UNKNOWN}}}\mbox{\Hypertarget{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a696b031073e74bf2cb98e5ef201d4aa3}\label{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a696b031073e74bf2cb98e5ef201d4aa3}} 
+UNKNOWN&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{REVOLUTE@{REVOLUTE}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!REVOLUTE@{REVOLUTE}}}\mbox{\Hypertarget{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a06ec593fa63e118e8d2d0fd58c223acf}\label{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a06ec593fa63e118e8d2d0fd58c223acf}} 
+REVOLUTE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{CONTINUOUS@{CONTINUOUS}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!CONTINUOUS@{CONTINUOUS}}}\mbox{\Hypertarget{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ab1fa9dd3af034b3ef4291579aa673c07}\label{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ab1fa9dd3af034b3ef4291579aa673c07}} 
+CONTINUOUS&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PRISMATIC@{PRISMATIC}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!PRISMATIC@{PRISMATIC}}}\mbox{\Hypertarget{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16aace8e17dd1560c692929800de207e902}\label{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16aace8e17dd1560c692929800de207e902}} 
+PRISMATIC&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FLOATING@{FLOATING}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!FLOATING@{FLOATING}}}\mbox{\Hypertarget{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a8bc27034f643005ec2eb9133de22220e}\label{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a8bc27034f643005ec2eb9133de22220e}} 
+FLOATING&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{PLANAR@{PLANAR}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!PLANAR@{PLANAR}}}\mbox{\Hypertarget{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a537304b851a585f4a26b71f5c40ce40b}\label{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16a537304b851a585f4a26b71f5c40ce40b}} 
+PLANAR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{FIXED@{FIXED}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!FIXED@{FIXED}}}\mbox{\Hypertarget{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}\label{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16ac6e6dc18b53b4c2681394b9d8aefcec7}} 
+FIXED&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a9f0ce2dde1dfc29ac92461d216bb82a8}\label{namespacetesseract__scene__graph_a9f0ce2dde1dfc29ac92461d216bb82a8}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!convert@{convert}}
+\index{convert@{convert}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{convert()}{convert()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily KDL\+::\+Frame tesseract\+\_\+scene\+\_\+graph\+::convert (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Isometry3d \&}]{transform }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Convert Eigen\+::\+Isometry3d to KDL\+::\+Frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em transform} & Input Eigen transform (Isometry3d) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+frame Output KDL Frame 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a2b1998c47fe8c81fdada6a5f7c28581d}\label{namespacetesseract__scene__graph_a2b1998c47fe8c81fdada6a5f7c28581d}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!convert@{convert}}
+\index{convert@{convert}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{convert()}{convert()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily KDL\+::\+Vector tesseract\+\_\+scene\+\_\+graph\+::convert (\begin{DoxyParamCaption}\item[{const Eigen\+::\+Vector3d \&}]{vector }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Convert Eigen\+::\+Isometry3d to KDL\+::\+Frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em transform} & Input Eigen transform (Isometry3d) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+frame Output KDL Frame 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_aecc9b2b45d0f05eaa5afa16a5c99729a}\label{namespacetesseract__scene__graph_aecc9b2b45d0f05eaa5afa16a5c99729a}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!convert@{convert}}
+\index{convert@{convert}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{convert()}{convert()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily KDL\+::\+Rigid\+Body\+Inertia tesseract\+\_\+scene\+\_\+graph\+::convert (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesseract__scene__graph_1_1Inertial_a460e182afe4ea7ff68c9855afa89f68b}{Inertial\+::\+Const\+Ptr}} \&}]{inertial }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Convert Tesseract Inertail to KDL \mbox{\hyperlink{classtesseract__scene__graph_1_1Inertial}{Inertial}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inertial} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_aa77add93f95a664b924ff3067128eb15}\label{namespacetesseract__scene__graph_aa77add93f95a664b924ff3067128eb15}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!convert@{convert}}
+\index{convert@{convert}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{convert()}{convert()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily KDL\+::\+Joint tesseract\+\_\+scene\+\_\+graph\+::convert (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint_a705d1f0a066833444550aa0c7f6d16b9}{Joint\+::\+Const\+Ptr}} \&}]{joint }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Convert Tesseract \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} to KDL \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em joint} & Tesseract \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A KDL \mbox{\hyperlink{classtesseract__scene__graph_1_1Joint}{Joint}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_ac2abd4b3afef22a092ab25d0104a22e4}\label{namespacetesseract__scene__graph_ac2abd4b3afef22a092ab25d0104a22e4}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!getAllowedCollisions@{getAllowedCollisions}}
+\index{getAllowedCollisions@{getAllowedCollisions}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{getAllowedCollisions()}{getAllowedCollisions()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{vhacdRaycastMesh_8cpp_adcf134d50025cc52907d0c8ac798d89d}{std\+::vector}}$<$std\+::string$>$ tesseract\+\_\+scene\+\_\+graph\+::get\+Allowed\+Collisions (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{vhacdRaycastMesh_8cpp_adcf134d50025cc52907d0c8ac798d89d}{std\+::vector}}$<$ std\+::string $>$ \&}]{link\+\_\+names,  }\item[{const \mbox{\hyperlink{namespacetesseract__scene__graph_a40a7b2e03fe5365f09dd8c309b6bcffb}{Allowed\+Collision\+Entries}} \&}]{acm\+\_\+entries,  }\item[{bool}]{remove\+\_\+duplicates = {\ttfamily true} }\end{DoxyParamCaption})}
+
+
+
+Gets allowed collisions for a set of link names. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em link\+\_\+names} & Vector of link names for which we want the allowed collisions \\
+\hline
+{\em acm\+\_\+entries} & Entries in the ACM. Get this with \mbox{\hyperlink{classtesseract__scene__graph_1_1AllowedCollisionMatrix_af336e45edd84667323ef31dd04415c7a}{Allowed\+Collision\+Matrix\+::get\+All\+Allowed\+Collisions()}} \\
+\hline
+{\em remove\+\_\+duplicates} & If true, duplicates will be removed. Default\+: true \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+vector of links that are allowed to collide with links given 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a889d2454755511e4d1878c948a3f7942}\label{namespacetesseract__scene__graph_a889d2454755511e4d1878c948a3f7942}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily std\+::ostream\& tesseract\+\_\+scene\+\_\+graph\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{namespacetesseract__scene__graph_ade43fa945a554b6e0c703e38e6a8cf16}{Joint\+Type}} \&}]{type }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a8282e1e01e7595b9ae8ce47813ccf35d}\label{namespacetesseract__scene__graph_a8282e1e01e7595b9ae8ce47813ccf35d}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$()}{operator<<()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::ostream\& tesseract\+\_\+scene\+\_\+graph\+::operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph_a52654d2ec93d3faa655f811c4bc72bed}{Scene\+Graph\+::\+Path}} \&}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a7132480e5402ba4a3c44d4dc09712c0a}\label{namespacetesseract__scene__graph_a7132480e5402ba4a3c44d4dc09712c0a}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!parseSceneGraph@{parseSceneGraph}}
+\index{parseSceneGraph@{parseSceneGraph}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{parseSceneGraph()}{parseSceneGraph()}}
+{\footnotesize\ttfamily bool tesseract\+\_\+scene\+\_\+graph\+::parse\+Scene\+Graph (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{Scene\+Graph}} \&}]{scene\+\_\+graph,  }\item[{KDL\+::\+Tree \&}]{tree }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Convert a Tesseract \mbox{\hyperlink{classtesseract__scene__graph_1_1SceneGraph}{Scene\+Graph}} into a KDL Tree If graph is not a tree it will return false. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em scene\+\_\+graph} & The Tesseract Scene Graph \\
+\hline
+{\em tree} & The KDL Tree to populate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns Flase if error occured, otherwise true 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacetesseract__scene__graph_a2c50647f73070577a0bd18924a9eef34}\label{namespacetesseract__scene__graph_a2c50647f73070577a0bd18924a9eef34}} 
+\index{tesseract\_scene\_graph@{tesseract\_scene\_graph}!DEFAULT\_TESSERACT\_MATERIAL@{DEFAULT\_TESSERACT\_MATERIAL}}
+\index{DEFAULT\_TESSERACT\_MATERIAL@{DEFAULT\_TESSERACT\_MATERIAL}!tesseract\_scene\_graph@{tesseract\_scene\_graph}}
+\doxysubsubsection{\texorpdfstring{DEFAULT\_TESSERACT\_MATERIAL}{DEFAULT\_TESSERACT\_MATERIAL}}
+{\footnotesize\ttfamily auto tesseract\+\_\+scene\+\_\+graph\+::\+DEFAULT\+\_\+\+TESSERACT\+\_\+\+MATERIAL = std\+::make\+\_\+shared$<$\mbox{\hyperlink{classtesseract__scene__graph_1_1Material}{Material}}$>$(\char`\"{}default\+\_\+tesseract\+\_\+material\char`\"{})\hspace{0.3cm}{\ttfamily [static]}}
+

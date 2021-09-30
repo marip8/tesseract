@@ -1,0 +1,14 @@
+<map id="tesseract_kinematics::RobotWithExternalPositionerInvKin" name="tesseract_kinematics::RobotWithExternalPositionerInvKin">
+<area shape="rect" id="node1" title="Robot With External Positioner Inverse kinematic implementation." alt="" coords="788,291,980,347"/>
+<area shape="rect" id="node2" href="$de/d1c/classtesseract__kinematics_1_1InverseKinematics.html" title="Inverse kinematics functions." alt="" coords="443,5,589,47"/>
+<area shape="rect" id="node3" href="$d2/d94/structtesseract__common_1_1KinematicLimits.html" title="Store kinematic limits." alt="" coords="417,135,615,176"/>
+<area shape="rect" id="node4" title=" " alt="" coords="180,142,256,169"/>
+<area shape="rect" id="node6" title=" " alt="" coords="453,200,579,241"/>
+<area shape="rect" id="node5" title=" " alt="" coords="435,265,597,307"/>
+<area shape="rect" id="node7" title=" " alt="" coords="453,331,579,372"/>
+<area shape="rect" id="node8" title=" " alt="" coords="433,396,599,437"/>
+<area shape="rect" id="node9" title=" " alt="" coords="179,502,257,529"/>
+<area shape="rect" id="node11" title=" " alt="" coords="436,539,596,566"/>
+<area shape="rect" id="node10" title=" " alt="" coords="5,495,129,536"/>
+<area shape="rect" id="node12" title=" " alt="" coords="441,591,591,632"/>
+</map>
