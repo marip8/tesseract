@@ -35,8 +35,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_geometry/geometry.h>
 #include <tesseract_geometry/impl/mesh_material.h>
 #include <tesseract_geometry/impl/polygon_mesh.h>
-#include <tesseract_common/resource.h>
-#include <tesseract_common/types.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_geometry::ConvexMesh)
@@ -70,8 +68,8 @@ public:
    */
   ConvexMesh(std::shared_ptr<const tesseract_common::VectorVector3d> vertices,
              std::shared_ptr<const Eigen::VectorXi> faces,
-             tesseract_common::Resource::Ptr resource = nullptr,
-             Eigen::Vector3d scale = Eigen::Vector3d(1, 1, 1),
+             tesseract_common::Resource::ConstPtr resource = nullptr,
+             const Eigen::Vector3d& scale = Eigen::Vector3d(1, 1, 1),
              std::shared_ptr<const tesseract_common::VectorVector3d> normals = nullptr,
              std::shared_ptr<const tesseract_common::VectorVector4d> vertex_colors = nullptr,
              MeshMaterial::Ptr mesh_material = nullptr,
@@ -79,7 +77,7 @@ public:
     : PolygonMesh(std::move(vertices),
                   std::move(faces),
                   std::move(resource),
-                  std::move(scale),
+                  scale,
                   std::move(normals),
                   std::move(vertex_colors),
                   std::move(mesh_material),
@@ -108,8 +106,8 @@ public:
   ConvexMesh(std::shared_ptr<const tesseract_common::VectorVector3d> vertices,
              std::shared_ptr<const Eigen::VectorXi> faces,
              int face_count,
-             tesseract_common::Resource::Ptr resource = nullptr,
-             Eigen::Vector3d scale = Eigen::Vector3d(1, 1, 1),
+             tesseract_common::Resource::ConstPtr resource = nullptr,
+             const Eigen::Vector3d& scale = Eigen::Vector3d(1, 1, 1),
              std::shared_ptr<const tesseract_common::VectorVector3d> normals = nullptr,
              std::shared_ptr<const tesseract_common::VectorVector4d> vertex_colors = nullptr,
              MeshMaterial::Ptr mesh_material = nullptr,
@@ -118,7 +116,7 @@ public:
                   std::move(faces),
                   face_count,
                   std::move(resource),
-                  std::move(scale),
+                  scale,
                   std::move(normals),
                   std::move(vertex_colors),
                   std::move(mesh_material),

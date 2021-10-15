@@ -32,6 +32,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
+#include <tesseract_kinematics/core/types.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::OPWInvKin)
@@ -39,7 +40,9 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_kinematics
 {
-/**@brief OPW Inverse Kinematics Implmentation. */
+static const std::string OPW_INV_KIN_CHAIN_SOLVER_NAME = "OPWInvKin";
+
+/**@brief OPW Inverse Kinematics Implementation. */
 class OPWInvKin : public InverseKinematics
 {
 public:
@@ -49,84 +52,46 @@ public:
 
   using Ptr = std::shared_ptr<OPWInvKin>;
   using ConstPtr = std::shared_ptr<const OPWInvKin>;
+  using UPtr = std::unique_ptr<OPWInvKin>;
+  using ConstUPtr = std::unique_ptr<const OPWInvKin>;
 
-  OPWInvKin() = default;
   ~OPWInvKin() override = default;
-  OPWInvKin(const OPWInvKin&) = delete;
-  OPWInvKin& operator=(const OPWInvKin&) = delete;
-  OPWInvKin(OPWInvKin&&) = delete;
-  OPWInvKin& operator=(OPWInvKin&&) = delete;
-
-  InverseKinematics::Ptr clone() const override;
-
-  bool update() override;
-
-  IKSolutions calcInvKin(const Eigen::Isometry3d& pose, const Eigen::Ref<const Eigen::VectorXd>& seed) const override;
-
-  IKSolutions calcInvKin(const Eigen::Isometry3d& pose,
-                         const Eigen::Ref<const Eigen::VectorXd>& seed,
-                         const std::string& link_name) const override;
-
-  bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const override;
-  unsigned int numJoints() const override;
-
-  const std::vector<std::string>& getJointNames() const override;
-  const std::vector<std::string>& getLinkNames() const override;
-  const std::vector<std::string>& getActiveLinkNames() const override;
-  const tesseract_common::KinematicLimits& getLimits() const override;
-  void setLimits(tesseract_common::KinematicLimits limits) override;
-  std::vector<Eigen::Index> getRedundancyCapableJointIndices() const override;
-  const std::string& getBaseLinkName() const override;
-  const std::string& getTipLinkName() const override;
-  const std::string& getName() const override;
-  const std::string& getSolverName() const override;
+  OPWInvKin(const OPWInvKin& other);
+  OPWInvKin& operator=(const OPWInvKin& other);
+  OPWInvKin(OPWInvKin&&) = default;
+  OPWInvKin& operator=(OPWInvKin&&) = default;
 
   /**
-   * @brief init Initialize OPW Inverse Kinematics
-   * @param name The name of the kinematic chain
+   * @brief Construct OPW Inverse Kinematics
    * @param params OPW kinematics parameters
    * @param base_link_name The name of the base link for the kinematic chain
    * @param tip_link_name The name of the tip link for the kinematic chain
    * @param joint_names The joint names for the kinematic chain
-   * @param link_names The link names for the kinematic chain
-   * @param active_link_names The active links names for the kinematic chain
-   * @param joint_limits The joint limits for the kinematic chain
-   * @return True if successful
+   * @param solver_name The solver name of the kinematic chain
    */
-  bool init(std::string name,
-            opw_kinematics::Parameters<double> params,
+  OPWInvKin(opw_kinematics::Parameters<double> params,
             std::string base_link_name,
             std::string tip_link_name,
             std::vector<std::string> joint_names,
-            std::vector<std::string> link_names,
-            std::vector<std::string> active_link_names,
-            tesseract_common::KinematicLimits limits);
+            std::string solver_name = OPW_INV_KIN_CHAIN_SOLVER_NAME);
 
-  /**
-   * @brief Checks if kinematics has been initialized
-   * @return True if init() has completed successfully
-   */
-  bool checkInitialized() const;
+  IKSolutions calcInvKin(const tesseract_common::TransformMap& tip_link_poses,
+                         const Eigen::Ref<const Eigen::VectorXd>& seed) const override final;
+
+  Eigen::Index numJoints() const override final;
+  std::vector<std::string> getJointNames() const override final;
+  std::string getBaseLinkName() const override final;
+  std::string getWorkingFrame() const override final;
+  std::vector<std::string> getTipLinkNames() const override final;
+  std::string getSolverName() const override final;
+  InverseKinematics::UPtr clone() const override final;
 
 protected:
-  bool initialized_{ false };                  /**< @brief Identifies if the object has been initialized */
-  opw_kinematics::Parameters<double> params_;  /**< @brief The opw kinematics parameters */
-  std::string base_link_name_;                 /**< @brief Kinematic base link name */
-  std::string tip_link_name_;                  /**< @brief Kinematic tip link name */
-  tesseract_common::KinematicLimits limits_;   /**< @brief Joint Limits, velocity limits, and acceleration limits */
-  std::vector<std::string> joint_names_;       /**< @brief joint names */
-  std::vector<std::string> link_names_;        /**< @brief link names */
-  std::vector<std::string> active_link_names_; /**< @brief active link names */
-  std::string name_;                           /**< @brief Name of the kinematic chain */
-  std::string solver_name_{ "OPWInvKin" };     /**< @brief Name of this solver */
-  std::vector<Eigen::Index> redundancy_indices_{ 0, 1, 2, 3, 4, 5 }; /**< Joint indicies that have redundancy (ex.
-                                                                        revolute) */
-
-  /**
-   * @brief This used by the clone method
-   * @return True if init() completes successfully
-   */
-  bool init(const OPWInvKin& kin);
+  opw_kinematics::Parameters<double> params_; /**< @brief The opw kinematics parameters */
+  std::string base_link_name_;                /**< @brief Link name of first link in the kinematic object */
+  std::string tip_link_name_;                 /**< @brief Link name of last kink in the kinematic object */
+  std::vector<std::string> joint_names_;      /**< @brief Joint names for the kinematic object */
+  std::string solver_name_{ OPW_INV_KIN_CHAIN_SOLVER_NAME }; /**< @brief Name of this solver */
 };
 
 }  // namespace tesseract_kinematics

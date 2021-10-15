@@ -37,11 +37,11 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_geometry/mesh_parser.h>
 #include <tesseract_geometry/impl/mesh.h>
 #include <tesseract_collision/core/common.h>
-#include <tesseract_scene_graph/resource_locator.h>
+#include <tesseract_common/resource_locator.h>
 
 std::vector<tesseract_geometry::ConvexMesh::Ptr>
 tesseract_urdf::parseConvexMesh(const tinyxml2::XMLElement* xml_element,
-                                const tesseract_scene_graph::ResourceLocator::Ptr& locator,
+                                const tesseract_common::ResourceLocator& locator,
                                 bool visual,
                                 int /*version*/)
 {
@@ -83,19 +83,19 @@ tesseract_urdf::parseConvexMesh(const tinyxml2::XMLElement* xml_element,
 
   if (visual)
     meshes = tesseract_geometry::createMeshFromResource<tesseract_geometry::ConvexMesh>(
-        locator->locateResource(filename), scale, true, true, true, true, true);
+        locator.locateResource(filename), scale, true, true, true, true, true);
   else
   {
     if (!convert)
     {
       meshes = tesseract_geometry::createMeshFromResource<tesseract_geometry::ConvexMesh>(
-          locator->locateResource(filename), scale, false, false);
+          locator.locateResource(filename), scale, false, false);
     }
     else
     {
       std::vector<tesseract_geometry::Mesh::Ptr> temp_meshes =
           tesseract_geometry::createMeshFromResource<tesseract_geometry::Mesh>(
-              locator->locateResource(filename), scale, true, false);
+              locator.locateResource(filename), scale, true, false);
       for (auto& mesh : temp_meshes)
         meshes.push_back(tesseract_collision::makeConvexMesh(*mesh));
     }

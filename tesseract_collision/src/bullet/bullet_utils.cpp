@@ -52,9 +52,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <octomap/octomap.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
-namespace tesseract_collision
-{
-namespace tesseract_collision_bullet
+namespace tesseract_collision::tesseract_collision_bullet
 {
 std::shared_ptr<btCollisionShape> createShapePrimitive(const tesseract_geometry::Box::ConstPtr& geom)
 {
@@ -95,10 +93,10 @@ std::shared_ptr<btCollisionShape> createShapePrimitive(const tesseract_geometry:
                                                        CollisionObjectWrapper* cow,
                                                        int shape_index)
 {
-  int vertice_count = geom->getVerticeCount();
-  int triangle_count = geom->getTriangleCount();
+  int vertice_count = geom->getVertexCount();
+  int triangle_count = geom->getFaceCount();
   const tesseract_common::VectorVector3d& vertices = *(geom->getVertices());
-  const Eigen::VectorXi& triangles = *(geom->getTriangles());
+  const Eigen::VectorXi& triangles = *(geom->getFaces());
 
   if (vertice_count > 0 && triangle_count > 0)
   {
@@ -110,7 +108,7 @@ std::shared_ptr<btCollisionShape> createShapePrimitive(const tesseract_geometry:
 
     for (int i = 0; i < triangle_count; ++i)
     {
-      btVector3 v[3];
+      btVector3 v[3];  // NOLINT
       assert(triangles[4 * i] == 3);
       for (unsigned x = 0; x < 3; ++x)
       {
@@ -140,7 +138,7 @@ std::shared_ptr<btCollisionShape> createShapePrimitive(const tesseract_geometry:
 
 std::shared_ptr<btCollisionShape> createShapePrimitive(const tesseract_geometry::ConvexMesh::ConstPtr& geom)
 {
-  int vertice_count = geom->getVerticeCount();
+  int vertice_count = geom->getVertexCount();
   int triangle_count = geom->getFaceCount();
   const tesseract_common::VectorVector3d& vertices = *(geom->getVertices());
 
@@ -364,5 +362,4 @@ CollisionObjectWrapper::CollisionObjectWrapper(std::string name,
   setWorldTransform(trans);
 }
 
-}  // namespace tesseract_collision_bullet
-}  // namespace tesseract_collision
+}  // namespace tesseract_collision::tesseract_collision_bullet

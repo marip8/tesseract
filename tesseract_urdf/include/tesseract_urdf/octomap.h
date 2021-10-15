@@ -36,10 +36,12 @@ namespace tinyxml2
 class XMLElement;
 class XMLDocument;
 }  // namespace tinyxml2
-namespace tesseract_scene_graph
+
+namespace tesseract_common
 {
 class ResourceLocator;
 }
+
 namespace tesseract_geometry
 {
 class Octree;
@@ -55,11 +57,10 @@ namespace tesseract_urdf
  * @param version The version number
  * @return A Tesseract Geometry Octree
  */
-std::shared_ptr<tesseract_geometry::Octree>
-parseOctomap(const tinyxml2::XMLElement* xml_element,
-             const std::shared_ptr<tesseract_scene_graph::ResourceLocator>& locator,
-             bool visual,
-             int version);
+std::shared_ptr<tesseract_geometry::Octree> parseOctomap(const tinyxml2::XMLElement* xml_element,
+                                                         const tesseract_common::ResourceLocator& locator,
+                                                         bool visual,
+                                                         int version);
 
 tinyxml2::XMLElement* writeOctomap(const std::shared_ptr<const tesseract_geometry::Octree>& octree,
                                    tinyxml2::XMLDocument& doc,

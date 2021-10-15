@@ -36,22 +36,42 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_kinematics
 {
-InverseKinematics::Ptr OPWInvKin::clone() const
+OPWInvKin::OPWInvKin(opw_kinematics::Parameters<double> params,
+                     std::string base_link_name,
+                     std::string tip_link_name,
+                     std::vector<std::string> joint_names,
+                     std::string solver_name)
+  : params_(params)
+  , base_link_name_(std::move(base_link_name))
+  , tip_link_name_(std::move(tip_link_name))
+  , joint_names_(std::move(joint_names))
+  , solver_name_(std::move(solver_name))
 {
-  auto cloned_invkin = std::make_shared<OPWInvKin>();
-  cloned_invkin->init(*this);
-  return cloned_invkin;
+  if (joint_names_.size() != 6)
+    throw std::runtime_error("OPWInvKin, only support six joints!");
 }
 
-bool OPWInvKin::update()
+InverseKinematics::UPtr OPWInvKin::clone() const { return std::make_unique<OPWInvKin>(*this); }
+
+OPWInvKin::OPWInvKin(const OPWInvKin& other) { *this = other; }
+
+OPWInvKin& OPWInvKin::operator=(const OPWInvKin& other)
 {
-  return init(name_, params_, base_link_name_, tip_link_name_, joint_names_, link_names_, active_link_names_, limits_);
+  base_link_name_ = other.base_link_name_;
+  tip_link_name_ = other.tip_link_name_;
+  joint_names_ = other.joint_names_;
+  params_ = other.params_;
+  solver_name_ = other.solver_name_;
+  return *this;
 }
 
-IKSolutions OPWInvKin::calcInvKin(const Eigen::Isometry3d& pose,
+IKSolutions OPWInvKin::calcInvKin(const tesseract_common::TransformMap& tip_link_poses,
                                   const Eigen::Ref<const Eigen::VectorXd>& /*seed*/) const
 {
-  opw_kinematics::Solutions<double> sols = opw_kinematics::inverse(params_, pose);
+  assert(tip_link_poses.size() == 1);
+  assert(tip_link_poses.find(tip_link_name_) != tip_link_poses.end());
+
+  opw_kinematics::Solutions<double> sols = opw_kinematics::inverse(params_, tip_link_poses.at(tip_link_name_));
 
   // Check the output
   IKSolutions solution_set;
@@ -66,119 +86,19 @@ IKSolutions OPWInvKin::calcInvKin(const Eigen::Isometry3d& pose,
       harmonizeTowardZero<double>(eigen_sol);  // Modifies 'sol' in place
 
       // Add solution
-      if (tesseract_common::satisfiesPositionLimits(eigen_sol, limits_.joint_limits))
-        solution_set.push_back(eigen_sol);
+      solution_set.push_back(eigen_sol);
     }
   }
 
   return solution_set;
 }
 
-IKSolutions OPWInvKin::calcInvKin(const Eigen::Isometry3d& /*pose*/,
-                                  const Eigen::Ref<const Eigen::VectorXd>& /*seed*/,
-                                  const std::string& /*link_name*/) const
-{
-  throw std::runtime_error("OPWInvKin::calcInvKin(const Eigen::Isometry3d&, const Eigen::Ref<const Eigen::VectorXd>&, "
-                           "const std::string&) Not Supported!");
-}
+Eigen::Index OPWInvKin::numJoints() const { return 6; }
 
-bool OPWInvKin::checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const
-{
-  if (vec.size() != numJoints())
-  {
-    CONSOLE_BRIDGE_logError(
-        "Number of joint angles (%d) don't match robot_model (%d)", static_cast<int>(vec.size()), numJoints());
-    return false;
-  }
-
-  for (int i = 0; i < vec.size(); ++i)
-  {
-    if ((vec[i] < limits_.joint_limits(i, 0)) || (vec(i) > limits_.joint_limits(i, 1)))
-    {
-      CONSOLE_BRIDGE_logDebug("Joint %s is out-of-range (%g < %g < %g)",
-                              joint_names_[static_cast<size_t>(i)].c_str(),
-                              limits_.joint_limits(i, 0),
-                              vec(i),
-                              limits_.joint_limits(i, 1));
-      return false;
-    }
-  }
-
-  return true;
-}
-
-unsigned int OPWInvKin::numJoints() const { return 6; }
-
-const std::vector<std::string>& OPWInvKin::getJointNames() const { return joint_names_; }
-const std::vector<std::string>& OPWInvKin::getLinkNames() const { return link_names_; }
-const std::vector<std::string>& OPWInvKin::getActiveLinkNames() const { return active_link_names_; }
-const tesseract_common::KinematicLimits& OPWInvKin::getLimits() const { return limits_; }
-
-void OPWInvKin::setLimits(tesseract_common::KinematicLimits limits)
-{
-  unsigned int nj = numJoints();
-  if (limits.joint_limits.rows() != nj || limits.velocity_limits.size() != nj ||
-      limits.acceleration_limits.size() != nj)
-    throw std::runtime_error("Kinematics limits assigned are invalid!");
-
-  limits_ = std::move(limits);
-}
-
-std::vector<Eigen::Index> OPWInvKin::getRedundancyCapableJointIndices() const { return redundancy_indices_; }
-
-const std::string& OPWInvKin::getBaseLinkName() const { return base_link_name_; }
-const std::string& OPWInvKin::getTipLinkName() const { return tip_link_name_; }
-const std::string& OPWInvKin::getName() const { return name_; }
-const std::string& OPWInvKin::getSolverName() const { return solver_name_; }
-
-bool OPWInvKin::init(std::string name,
-                     opw_kinematics::Parameters<double> params,
-                     std::string base_link_name,
-                     std::string tip_link_name,
-                     std::vector<std::string> joint_names,
-                     std::vector<std::string> link_names,
-                     std::vector<std::string> active_link_names,
-                     tesseract_common::KinematicLimits limits)
-{
-  assert(joint_names.size() == 6);
-
-  name_ = std::move(name);
-  params_ = params;
-  base_link_name_ = std::move(base_link_name);
-  tip_link_name_ = std::move(tip_link_name);
-  joint_names_ = std::move(joint_names);
-  link_names_ = std::move(link_names);
-  active_link_names_ = std::move(active_link_names);
-  limits_ = std::move(limits);
-  initialized_ = true;
-
-  return initialized_;
-}
-
-bool OPWInvKin::init(const OPWInvKin& kin)
-{
-  initialized_ = kin.initialized_;
-  name_ = kin.name_;
-  params_ = kin.params_;
-  solver_name_ = kin.solver_name_;
-  base_link_name_ = kin.base_link_name_;
-  tip_link_name_ = kin.tip_link_name_;
-  joint_names_ = kin.joint_names_;
-  link_names_ = kin.link_names_;
-  active_link_names_ = kin.active_link_names_;
-  limits_ = kin.limits_;
-
-  return initialized_;
-}
-
-bool OPWInvKin::checkInitialized() const
-{
-  if (!initialized_)
-  {
-    CONSOLE_BRIDGE_logError("Kinematics has not been initialized!");
-  }
-
-  return initialized_;
-}
+std::vector<std::string> OPWInvKin::getJointNames() const { return joint_names_; }
+std::string OPWInvKin::getBaseLinkName() const { return base_link_name_; }
+std::string OPWInvKin::getWorkingFrame() const { return base_link_name_; }
+std::vector<std::string> OPWInvKin::getTipLinkNames() const { return { tip_link_name_ }; }
+std::string OPWInvKin::getSolverName() const { return solver_name_; }
 
 }  // namespace tesseract_kinematics

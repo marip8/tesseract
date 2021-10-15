@@ -11,7 +11,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 using namespace tesseract_scene_graph;
 using namespace tesseract_urdf;
 
-std::string toString(const SceneGraph::Path& path)
+std::string toString(const ShortestPath& path)
 {
   std::stringstream ss;
   ss << path;
@@ -56,8 +56,7 @@ int main(int /*argc*/, char** /*argv*/)
   // documentation:end:2: Get the urdf file path
 
   // documentation:start:3: Create scene graph
-  tesseract_scene_graph::ResourceLocator::Ptr locator =
-      std::make_shared<tesseract_scene_graph::SimpleResourceLocator>(locateResource);
+  tesseract_common::SimpleResourceLocator locator(locateResource);
   SceneGraph::Ptr g = parseURDFFile(urdf_file, locator);
   // documentation:end:3: Create scene graph
 

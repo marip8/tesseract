@@ -34,7 +34,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #include <tesseract_urdf/octomap.h>
 #include <tesseract_urdf/octree.h>
 #include <tesseract_scene_graph/utils.h>
-#include <tesseract_scene_graph/resource_locator.h>
+#include <tesseract_common/resource_locator.h>
 #include <tesseract_geometry/impl/octree.h>
 
 #ifdef TESSERACT_PARSE_POINT_CLOUDS
@@ -42,7 +42,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 #endif
 
 tesseract_geometry::Octree::Ptr tesseract_urdf::parseOctomap(const tinyxml2::XMLElement* xml_element,
-                                                             const tesseract_scene_graph::ResourceLocator::Ptr& locator,
+                                                             const tesseract_common::ResourceLocator& locator,
                                                              const bool /*visual*/,
                                                              int version)
 {
@@ -50,7 +50,7 @@ tesseract_geometry::Octree::Ptr tesseract_urdf::parseOctomap(const tinyxml2::XML
   if (tesseract_common::QueryStringAttribute(xml_element, "shape_type", shape_type) != tinyxml2::XML_SUCCESS)
     std::throw_with_nested(std::runtime_error("Octomap: Missing or failed parsing attribute 'shape_type'!"));
 
-  tesseract_geometry::Octree::SubType sub_type;
+  tesseract_geometry::Octree::SubType sub_type{ tesseract_geometry::Octree::SubType::BOX };
   if (shape_type == "box")
     sub_type = tesseract_geometry::Octree::SubType::BOX;
   else if (shape_type == "sphere_inside")

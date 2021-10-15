@@ -38,6 +38,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_common/types.h>
+#include <tesseract_kinematics/core/types.h>
 
 #ifdef SWIG
 %shared_ptr(tesseract_kinematics::InverseKinematics)
@@ -45,8 +46,6 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_kinematics
 {
-using IKSolutions = std::vector<Eigen::VectorXd>;
-
 /** @brief Inverse kinematics functions. */
 class InverseKinematics
 {
@@ -57,108 +56,65 @@ public:
 
   using Ptr = std::shared_ptr<InverseKinematics>;
   using ConstPtr = std::shared_ptr<const InverseKinematics>;
+  using UPtr = std::unique_ptr<InverseKinematics>;
+  using ConstUPtr = std::unique_ptr<const InverseKinematics>;
 
   InverseKinematics() = default;
   virtual ~InverseKinematics() = default;
-  InverseKinematics(const InverseKinematics&) = delete;
-  InverseKinematics& operator=(const InverseKinematics&) = delete;
-  InverseKinematics(InverseKinematics&&) = delete;
-  InverseKinematics& operator=(InverseKinematics&&) = delete;
+  InverseKinematics(const InverseKinematics&) = default;
+  InverseKinematics& operator=(const InverseKinematics&) = default;
+  InverseKinematics(InverseKinematics&&) = default;
+  InverseKinematics& operator=(InverseKinematics&&) = default;
 
   /**
-   * @brief Updates kinematics if kinematic parameters have changed
-   * @return True if successful
-   */
-  virtual bool update() = 0;
-
-  /**
-   * @brief Calculates joint solutions given a pose.
-   * @details If redundant solutions are needed see utility funciton getRedundantSolutions.
-   * @param solutions A vector of solutions, so check the size of the vector to determine the number of solutions
-   * @param pose Transform of end-of-tip relative to root (base link)
-   * @param seed Vector of seed joint angles (size must match number of joints in robot chain)
+   * @brief Calculates joint solutions given a pose for each tip link.
+   * @details This interface supports IK for both kinematic chains that have a single tool tip link and kinematic chains
+   * that have multiple tip links. For example, consider a robot with external part positioner: a pose can be specified
+   * to be relative to the tip link of the robot or the tip link of the positioner is to support a pose relative to a
+   * active link. For example a robot with an external positioner where the pose is relative to the tip link of the
+   * positioner.
+   * @note Redundant joint solutions can be provided by the utility function getRedundantSolutions
+   * @param tip_link_poses A map of poses corresponding to each tip link provided in getTipLinkNames and relative to the
+   * working frame of the kinematics group for which to solve inverse kinematics
+   * @param seed Vector of seed joint angles (size must match number of joints in kinematic object)
    * @return A vector of solutions, If empty it failed to find a solution (including uninitialized)
    */
-  virtual IKSolutions calcInvKin(const Eigen::Isometry3d& pose,
+  virtual IKSolutions calcInvKin(const tesseract_common::TransformMap& tip_link_poses,
                                  const Eigen::Ref<const Eigen::VectorXd>& seed) const = 0;
-
-  /**
-   * @brief Calculates joint solutions given a pose for a specific link.
-   * @details If redundant solutions are needed see utility funciton getRedundantSolutions.
-   * @param pose Transform of end-of-tip relative to root (base link)
-   * @param seed Vector of seed joint angles (size must match number of joints in robot chain)
-   * @return A vector of solutions, If empty it failed to find a solution (including uninitialized)
-   */
-  virtual IKSolutions calcInvKin(const Eigen::Isometry3d& pose,
-                                 const Eigen::Ref<const Eigen::VectorXd>& seed,
-                                 const std::string& link_name) const = 0;
-
-  /**
-   * @brief Check for consistency in # and limits of joints
-   * @param vec Vector of joint values
-   * @return True if size of vec matches # of robot joints and all joints are within limits
-   */
-  virtual bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const = 0;
 
   /**
    * @brief Get list of joint names for kinematic object
    * @return A vector of joint names, joint_list_
    */
-  virtual const std::vector<std::string>& getJointNames() const = 0;
-
-  /**
-   * @brief Get list of all link names (with and without geometry) for kinematic object
-   * @return A vector of names, link_list_
-   */
-  virtual const std::vector<std::string>& getLinkNames() const = 0;
-
-  /**
-   * @brief Get list of active link names (with and without geometry) for kinematic object
-   *
-   * Note: This only includes links that are children of the active joints
-   *
-   * @return A vector of names, active_link_list_
-   */
-  virtual const std::vector<std::string>& getActiveLinkNames() const = 0;
-
-  /**
-   * @brief Getter for kinematic limits (joint, velocity, acceleration, etc.)
-   * @return Kinematic Limits
-   */
-  virtual const tesseract_common::KinematicLimits& getLimits() const = 0;
-
-  /**
-   * @brief Setter for kinematic limits (joint, velocity, acceleration, etc.)
-   * @param Kinematic Limits
-   */
-  virtual void setLimits(tesseract_common::KinematicLimits limits) = 0;
-
-  /**
-   * @brief Get vector indicating which joints are capable of producing redundant solutions
-   * @return A vector of joint indicies
-   */
-  virtual std::vector<Eigen::Index> getRedundancyCapableJointIndices() const = 0;
+  virtual std::vector<std::string> getJointNames() const = 0;
 
   /**
    * @brief Number of joints in robot
    * @return Number of joints in robot
    */
-  virtual unsigned int numJoints() const = 0;
+  virtual Eigen::Index numJoints() const = 0;
 
-  /** @brief getter for the robot base link name */
-  virtual const std::string& getBaseLinkName() const = 0;
+  /** @brief Get the robot base link name */
+  virtual std::string getBaseLinkName() const = 0;
 
-  /** @brief Get the tip link name */
-  virtual const std::string& getTipLinkName() const = 0;
+  /**
+   * @brief Get the inverse kinematics working frame
+   * @details This is the frame of reference in which all poses given to the calcInvKin function should be defined
+   */
+  virtual std::string getWorkingFrame() const = 0;
 
-  /** @brief Name of the maniputlator */
-  virtual const std::string& getName() const = 0;
+  /**
+   * @brief Get the names of the tip links of the kinematics group
+   * @details In the case of a kinematic chain, this returns one tip link; in the case of a kinematic tree this returns
+   * the tip link for each branch of the tree.
+   */
+  virtual std::vector<std::string> getTipLinkNames() const = 0;
 
-  /** @brief Get the name of the solver. Recommned using the name of the class. */
-  virtual const std::string& getSolverName() const = 0;
+  /** @brief Get the name of the solver. Recommend using the name of the class. */
+  virtual std::string getSolverName() const = 0;
 
   /** @brief Clone the forward kinematics object */
-  virtual std::shared_ptr<InverseKinematics> clone() const = 0;
+  virtual InverseKinematics::UPtr clone() const = 0;
 };
 
 }  // namespace tesseract_kinematics

@@ -40,10 +40,11 @@
 
 namespace tesseract_kinematics
 {
+// LCOV_EXCL_START
 namespace
 {
 const double ZERO_THRESH = 0.00000001;
-int SIGN(double x) { return (x > 0) - (x < 0); }
+int SIGN(double x) { return (x > 0) - (x < 0); }  // NOLINT
 const double PI = M_PI;
 }  // namespace
 
@@ -64,14 +65,14 @@ int inverse(const Eigen::Isometry3d& T, const URParameters& params, double* q_so
   double T23 = T(2, 3);
 
   ////////////////////////////// shoulder rotate joint (q1) //////////////////////////////
-  double q1[2];
+  double q1[2];  // NOLINT
   {
     double A = params.d6 * T12 - T13;
     double B = params.d6 * T02 - T03;
     double R = A * A + B * B;
     if (fabs(A) < ZERO_THRESH)
     {
-      double div;
+      double div{ 0 };
       if (fabs(fabs(params.d4) - fabs(B)) < ZERO_THRESH)
         div = -SIGN(params.d4) * SIGN(B);
       else
@@ -87,7 +88,7 @@ int inverse(const Eigen::Isometry3d& T, const URParameters& params, double* q_so
     }
     else if (fabs(B) < ZERO_THRESH)
     {
-      double div;
+      double div{ 0 };
       if (fabs(fabs(params.d4) - fabs(A)) < ZERO_THRESH)
         div = SIGN(params.d4) * SIGN(A);
       else
@@ -123,12 +124,12 @@ int inverse(const Eigen::Isometry3d& T, const URParameters& params, double* q_so
   ////////////////////////////////////////////////////////////////////////////////
 
   ////////////////////////////// wrist 2 joint (q5) //////////////////////////////
-  double q5[2][2];
+  double q5[2][2];  // NOLINT
   {
     for (int i = 0; i < 2; i++)
     {
       double numer = (T03 * sin(q1[i]) - T13 * cos(q1[i]) - params.d4);
-      double div;
+      double div{ 0 };
       if (fabs(fabs(numer) - fabs(params.d6)) < ZERO_THRESH)
         div = SIGN(numer) * SIGN(params.d6);
       else
@@ -147,7 +148,7 @@ int inverse(const Eigen::Isometry3d& T, const URParameters& params, double* q_so
       {
         double c1 = cos(q1[i]), s1 = sin(q1[i]);
         double c5 = cos(q5[i][j]), s5 = sin(q5[i][j]);
-        double q6;
+        double q6{ 0 };
         ////////////////////////////// wrist 3 joint (q6) //////////////////////////////
         if (fabs(s5) < ZERO_THRESH)
           q6 = q6_des;
@@ -161,7 +162,7 @@ int inverse(const Eigen::Isometry3d& T, const URParameters& params, double* q_so
         }
         ////////////////////////////////////////////////////////////////////////////////
 
-        double q2[2], q3[2], q4[2];
+        double q2[2], q3[2], q4[2];  // NOLINT
         ///////////////////////////// RRR joints (q2,q3,q4) ////////////////////////////
         double c6 = cos(q6), s6 = sin(q6);
         double x04x = -s5 * (T02 * c1 + T12 * s1) - c5 * (s6 * (T01 * c1 + T11 * s1) - c6 * (T00 * c1 + T10 * s1));
@@ -217,27 +218,51 @@ int inverse(const Eigen::Isometry3d& T, const URParameters& params, double* q_so
   }
   return num_sols;
 }
+// LCOV_EXCL_STOP
 
-InverseKinematics::Ptr URInvKin::clone() const
+URInvKin::URInvKin(URParameters params,
+                   std::string base_link_name,
+                   std::string tip_link_name,
+                   std::vector<std::string> joint_names,
+                   std::string solver_name)
+  : params_(params)
+  , base_link_name_(std::move(base_link_name))
+  , tip_link_name_(std::move(tip_link_name))
+  , joint_names_(std::move(joint_names))
+  , solver_name_(std::move(solver_name))
 {
-  auto cloned_invkin = std::make_shared<URInvKin>();
-  cloned_invkin->init(*this);
-  return cloned_invkin;
+  if (joint_names_.size() != 6)
+    throw std::runtime_error("OPWInvKin, only support six joints!");
 }
 
-bool URInvKin::update()
+InverseKinematics::UPtr URInvKin::clone() const { return std::make_unique<URInvKin>(*this); }
+
+URInvKin::URInvKin(const URInvKin& other) { *this = other; }
+
+URInvKin& URInvKin::operator=(const URInvKin& other)
 {
-  return init(name_, params_, base_link_name_, tip_link_name_, joint_names_, link_names_, active_link_names_, limits_);
+  base_link_name_ = other.base_link_name_;
+  tip_link_name_ = other.tip_link_name_;
+  joint_names_ = other.joint_names_;
+  params_ = other.params_;
+  solver_name_ = other.solver_name_;
+
+  return *this;
 }
 
-IKSolutions URInvKin::calcInvKin(const Eigen::Isometry3d& pose, const Eigen::Ref<const Eigen::VectorXd>& /*seed*/) const
+IKSolutions URInvKin::calcInvKin(const tesseract_common::TransformMap& tip_link_poses,
+                                 const Eigen::Ref<const Eigen::VectorXd>& /*seed*/) const
 {
+  assert(tip_link_poses.size() == 1);
+  assert(tip_link_poses.find(tip_link_name_) != tip_link_poses.end());
+
   Eigen::Isometry3d base_offset = Eigen::Isometry3d::Identity() * Eigen::AngleAxisd(M_PI, Eigen::Vector3d::UnitZ());
-  Eigen::Isometry3d corrected_pose = base_offset.inverse() * pose;
+  Eigen::Isometry3d corrected_pose = base_offset.inverse() * tip_link_poses.at(tip_link_name_);
 
   // Do the analytic IK
+  // NOLINTNEXTLINE
   std::array<std::array<double, 6>, 8> sols;  // maximum of 8 IK solutions
-  std::size_t num_sols = static_cast<std::size_t>(inverse(corrected_pose, params_, sols[0].data(), 0));
+  auto num_sols = static_cast<std::size_t>(inverse(corrected_pose, params_, sols[0].data(), 0));
 
   // Check the output
   IKSolutions solution_set;
@@ -256,114 +281,11 @@ IKSolutions URInvKin::calcInvKin(const Eigen::Isometry3d& pose, const Eigen::Ref
   return solution_set;
 }
 
-IKSolutions URInvKin::calcInvKin(const Eigen::Isometry3d& pose,
-                                 const Eigen::Ref<const Eigen::VectorXd>& seed,
-                                 const std::string& link_name) const
-{
-  if (link_name == tip_link_name_)
-    return calcInvKin(pose, seed);
-
-  throw std::runtime_error("UR5InvKin::calcInvKin(const Eigen::Isometry3d&, const Eigen::Ref<const Eigen::VectorXd>&, "
-                           "const std::string&) Not Supported!");
-}
-
-bool URInvKin::checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const
-{
-  if (vec.size() != numJoints())
-  {
-    CONSOLE_BRIDGE_logError(
-        "Number of joint angles (%d) don't match robot_model (%d)", static_cast<int>(vec.size()), numJoints());
-    return false;
-  }
-
-  for (int i = 0; i < vec.size(); ++i)
-  {
-    if ((vec[i] < limits_.joint_limits(i, 0)) || (vec(i) > limits_.joint_limits(i, 1)))
-    {
-      CONSOLE_BRIDGE_logDebug("Joint %s is out-of-range (%g < %g < %g)",
-                              joint_names_[static_cast<size_t>(i)].c_str(),
-                              limits_.joint_limits(i, 0),
-                              vec(i),
-                              limits_.joint_limits(i, 1));
-      return false;
-    }
-  }
-
-  return true;
-}
-
-unsigned int URInvKin::numJoints() const { return 6; }
-
-const std::vector<std::string>& URInvKin::getJointNames() const { return joint_names_; }
-const std::vector<std::string>& URInvKin::getLinkNames() const { return link_names_; }
-const std::vector<std::string>& URInvKin::getActiveLinkNames() const { return active_link_names_; }
-const tesseract_common::KinematicLimits& URInvKin::getLimits() const { return limits_; }
-
-void URInvKin::setLimits(tesseract_common::KinematicLimits limits)
-{
-  unsigned int nj = numJoints();
-  if (limits.joint_limits.rows() != nj || limits.velocity_limits.size() != nj ||
-      limits.acceleration_limits.size() != nj)
-    throw std::runtime_error("Kinematics limits assigned are invalid!");
-
-  limits_ = std::move(limits);
-}
-
-std::vector<Eigen::Index> URInvKin::getRedundancyCapableJointIndices() const { return redundancy_indices_; }
-
-const std::string& URInvKin::getBaseLinkName() const { return base_link_name_; }
-const std::string& URInvKin::getTipLinkName() const { return tip_link_name_; }
-const std::string& URInvKin::getName() const { return name_; }
-const std::string& URInvKin::getSolverName() const { return solver_name_; }
-
-bool URInvKin::init(std::string name,
-                    URParameters params,
-                    std::string base_link_name,
-                    std::string tip_link_name,
-                    std::vector<std::string> joint_names,
-                    std::vector<std::string> link_names,
-                    std::vector<std::string> active_link_names,
-                    tesseract_common::KinematicLimits limits)
-{
-  assert(joint_names.size() == 6);
-
-  name_ = std::move(name);
-  params_ = std::move(params);
-  base_link_name_ = std::move(base_link_name);
-  tip_link_name_ = std::move(tip_link_name);
-  joint_names_ = std::move(joint_names);
-  link_names_ = std::move(link_names);
-  active_link_names_ = std::move(active_link_names);
-  limits_ = std::move(limits);
-  initialized_ = true;
-
-  return initialized_;
-}
-
-bool URInvKin::init(const URInvKin& kin)
-{
-  initialized_ = kin.initialized_;
-  name_ = kin.name_;
-  solver_name_ = kin.solver_name_;
-  params_ = kin.params_;
-  base_link_name_ = kin.base_link_name_;
-  tip_link_name_ = kin.tip_link_name_;
-  joint_names_ = kin.joint_names_;
-  link_names_ = kin.link_names_;
-  active_link_names_ = kin.active_link_names_;
-  limits_ = kin.limits_;
-
-  return initialized_;
-}
-
-bool URInvKin::checkInitialized() const
-{
-  if (!initialized_)
-  {
-    CONSOLE_BRIDGE_logError("Kinematics has not been initialized!");
-  }
-
-  return initialized_;
-}
+Eigen::Index URInvKin::numJoints() const { return 6; }
+std::vector<std::string> URInvKin::getJointNames() const { return joint_names_; }
+std::string URInvKin::getBaseLinkName() const { return base_link_name_; }
+std::string URInvKin::getWorkingFrame() const { return base_link_name_; }
+std::vector<std::string> URInvKin::getTipLinkNames() const { return { tip_link_name_ }; }
+std::string URInvKin::getSolverName() const { return solver_name_; }
 
 }  // namespace tesseract_kinematics

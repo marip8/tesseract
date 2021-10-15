@@ -37,10 +37,12 @@ namespace tinyxml2
 class XMLElement;
 class XMLDocument;
 }  // namespace tinyxml2
-namespace tesseract_scene_graph
+
+namespace tesseract_common
 {
 class ResourceLocator;
 }
+
 namespace tesseract_geometry
 {
 class Mesh;
@@ -56,11 +58,10 @@ namespace tesseract_urdf
  * @param version The version number
  * @return A vector of Tesseract Meshes
  */
-std::vector<std::shared_ptr<tesseract_geometry::Mesh>>
-parseMesh(const tinyxml2::XMLElement* xml_element,
-          const std::shared_ptr<tesseract_scene_graph::ResourceLocator>& locator,
-          bool visual,
-          int version);
+std::vector<std::shared_ptr<tesseract_geometry::Mesh>> parseMesh(const tinyxml2::XMLElement* xml_element,
+                                                                 const tesseract_common::ResourceLocator& locator,
+                                                                 bool visual,
+                                                                 int version);
 
 tinyxml2::XMLElement* writeMesh(const std::shared_ptr<const tesseract_geometry::Mesh>& mesh,
                                 tinyxml2::XMLDocument& doc,

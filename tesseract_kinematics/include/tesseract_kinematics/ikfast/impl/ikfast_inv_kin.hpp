@@ -26,8 +26,10 @@
 #ifndef TESSERACT_KINEMATICS_IMPL_IKFAST_INV_KIN_HPP
 #define TESSERACT_KINEMATICS_IMPL_IKFAST_INV_KIN_HPP
 
+#ifndef IKFAST_HAS_LIBRARY
 #define IKFAST_HAS_LIBRARY
 #define IKFAST_NO_MAIN
+#endif
 
 #include <tesseract_common/macros.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
@@ -41,29 +43,41 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_kinematics
 {
-IKFastInvKin::IKFastInvKin() : initialized_(false), solver_name_("IKFastInvKin") {}
-
-InverseKinematics::Ptr IKFastInvKin::clone() const
+inline IKFastInvKin::IKFastInvKin(std::string base_link_name,
+                                  std::string tip_link_name,
+                                  std::vector<std::string> joint_names,
+                                  std::string solver_name)
+  : base_link_name_(std::move(base_link_name))
+  , tip_link_name_(std::move(tip_link_name))
+  , joint_names_(std::move(joint_names))
+  , solver_name_(std::move(solver_name))
 {
-  auto cloned_invkin = std::make_shared<IKFastInvKin>();
-  cloned_invkin->init(*this);
-  return std::move(cloned_invkin);
+  if (joint_names_.size() != 6)
+    throw std::runtime_error("OPWInvKin, only support six joints!");
 }
 
-bool IKFastInvKin::update()
+inline InverseKinematics::UPtr IKFastInvKin::clone() const { return std::make_unique<IKFastInvKin>(*this); }
+
+inline IKFastInvKin::IKFastInvKin(const IKFastInvKin& other) { *this = other; }
+
+inline IKFastInvKin& IKFastInvKin::operator=(const IKFastInvKin& other)
 {
-  return init(name_,
-              base_link_name_,
-              tip_link_name_,
-              joint_names_,
-              link_names_,
-              active_link_names_,
-              limits_,
-              redundancy_indices_);
+  base_link_name_ = other.base_link_name_;
+  tip_link_name_ = other.tip_link_name_;
+  joint_names_ = other.joint_names_;
+  solver_name_ = other.solver_name_;
+
+  return *this;
 }
 
-IKSolutions IKFastInvKin::calcInvKin(const Eigen::Isometry3d& pose, const Eigen::Ref<const Eigen::VectorXd>& seed) const
+inline IKSolutions IKFastInvKin::calcInvKin(const tesseract_common::TransformMap& tip_link_poses,
+                                            const Eigen::Ref<const Eigen::VectorXd>& /*seed*/) const
 {
+  assert(tip_link_poses.size() == 1);
+  assert(tip_link_poses.find(tip_link_name_) != tip_link_poses.end());
+
+  const Eigen::Isometry3d& pose = tip_link_poses.at(tip_link_name_);
+
   // Convert to ikfast data type
   Eigen::Transform<IkReal, 3, Eigen::Isometry> ikfast_tcp = pose.cast<IkReal>();
 
@@ -79,8 +93,8 @@ IKSolutions IKFastInvKin::calcInvKin(const Eigen::Isometry3d& pose, const Eigen:
   ComputeIk(translation.data(), rotation.data(), nullptr, ikfast_solution_set);
 
   // Unpack the solutions into the output vector
-  const auto n_sols = ikfast_solution_set.GetNumSolutions();
-  int ikfast_dof = numJoints();
+  const std::size_t n_sols = ikfast_solution_set.GetNumSolutions();
+  const auto ikfast_dof = static_cast<std::size_t>(numJoints());
 
   std::vector<IkReal> ikfast_output;
   ikfast_output.resize(n_sols * ikfast_dof);
@@ -97,120 +111,29 @@ IKSolutions IKFastInvKin::calcInvKin(const Eigen::Isometry3d& pose, const Eigen:
   sols.insert(end(sols), std::make_move_iterator(ikfast_output.begin()), std::make_move_iterator(ikfast_output.end()));
 
   // Check the output
-  int num_sol = sols.size() / ikfast_dof;
+  int num_sol = static_cast<int>(sols.size() / ikfast_dof);
   IKSolutions solution_set;
   solution_set.reserve(sols.size());
   for (int i = 0; i < num_sol; i++)
   {
-    Eigen::Map<Eigen::VectorXd> eigen_sol(sols.data() + ikfast_dof * i, static_cast<Eigen::Index>(ikfast_dof));
+    Eigen::Map<Eigen::VectorXd> eigen_sol(sols.data() + static_cast<Eigen::Index>(ikfast_dof) * i,
+                                          static_cast<Eigen::Index>(ikfast_dof));
     if (eigen_sol.array().allFinite())
     {
       harmonizeTowardZero<double>(eigen_sol);  // Modifies 'sol' in place
-
-      // Add solution
-      if (tesseract_common::satisfiesPositionLimits(eigen_sol, limits_.joint_limits))
-        solution_set.push_back(eigen_sol);
+      solution_set.push_back(eigen_sol);
     }
   }
 
   return solution_set;
 }
 
-IKSolutions IKFastInvKin::calcInvKin(const Eigen::Isometry3d& pose,
-                                     const Eigen::Ref<const Eigen::VectorXd>& seed,
-                                     const std::string& link_name) const
-{
-  if (link_name == tip_link_name_)
-    return calcInvKin(pose, seed);
-
-  throw std::runtime_error("IKFastInvKin::calcInvKin(Eigen::VectorXd&, const Eigen::Isometry3d&, const "
-                           "Eigen::Ref<const Eigen::VectorXd>&, const std::string&) Not Supported!");
-}
-
-bool IKFastInvKin::checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const
-{
-  if (vec.size() != numJoints())
-  {
-    CONSOLE_BRIDGE_logError(
-        "Number of joint angles (%d) don't match robot_model (%d)", static_cast<int>(vec.size()), numJoints());
-    return false;
-  }
-
-  if (!tesseract_common::satisfiesPositionLimits(vec, limits_.joint_limits))
-    return false;
-
-  return true;
-}
-
-unsigned int IKFastInvKin::numJoints() const { return GetNumJoints(); }
-
-bool IKFastInvKin::init(std::string name,
-                        std::string base_link_name,
-                        std::string tip_link_name,
-                        std::vector<std::string> joint_names,
-                        std::vector<std::string> link_names,
-                        std::vector<std::string> active_link_names,
-                        tesseract_common::KinematicLimits limits,
-                        std::vector<Eigen::Index> redundancy_indices)
-{
-  name_ = std::move(name);
-  base_link_name_ = std::move(base_link_name);
-  tip_link_name_ = std::move(tip_link_name);
-  joint_names_ = std::move(joint_names);
-  link_names_ = std::move(link_names);
-  active_link_names_ = std::move(active_link_names);
-  limits_ = limits;
-  redundancy_indices_ = redundancy_indices;
-  initialized_ = true;
-
-  return initialized_;
-}
-
-bool IKFastInvKin::init(const IKFastInvKin& kin)
-{
-  initialized_ = kin.initialized_;
-  name_ = kin.name_;
-  solver_name_ = kin.solver_name_;
-  base_link_name_ = kin.base_link_name_;
-  tip_link_name_ = kin.tip_link_name_;
-  joint_names_ = kin.joint_names_;
-  link_names_ = kin.link_names_;
-  active_link_names_ = kin.active_link_names_;
-  limits_ = kin.limits_;
-  redundancy_indices_ = kin.redundancy_indices_;
-
-  return initialized_;
-}
-
-const std::vector<std::string>& IKFastInvKin::getJointNames() const { return joint_names_; }
-const std::vector<std::string>& IKFastInvKin::getLinkNames() const { return link_names_; }
-const std::vector<std::string>& IKFastInvKin::getActiveLinkNames() const { return active_link_names_; }
-const tesseract_common::KinematicLimits& IKFastInvKin::getLimits() const { return limits_; }
-
-void IKFastInvKin::setLimits(tesseract_common::KinematicLimits limits)
-{
-  unsigned int nj = numJoints();
-  if (limits.joint_limits.rows() != nj || limits.velocity_limits.size() != nj ||
-      limits.acceleration_limits.size() != nj)
-    throw std::runtime_error("Kinematics limits assigned are invalid!");
-
-  limits_ = std::move(limits);
-}
-std::vector<Eigen::Index> IKFastInvKin::getRedundancyCapableJointIndices() const { return redundancy_indices_; }
-const std::string& IKFastInvKin::getBaseLinkName() const { return base_link_name_; }
-const std::string& IKFastInvKin::getTipLinkName() const { return tip_link_name_; }
-const std::string& IKFastInvKin::getName() const { return name_; }
-const std::string& IKFastInvKin::getSolverName() const { return solver_name_; }
-
-bool IKFastInvKin::checkInitialized() const
-{
-  if (!initialized_)
-  {
-    CONSOLE_BRIDGE_logError("Kinematics has not been initialized!");
-  }
-
-  return initialized_;
-}
+inline Eigen::Index IKFastInvKin::numJoints() const { return static_cast<Eigen::Index>(GetNumJoints()); }
+inline std::vector<std::string> IKFastInvKin::getJointNames() const { return joint_names_; }
+inline std::string IKFastInvKin::getBaseLinkName() const { return base_link_name_; }
+inline std::string IKFastInvKin::getWorkingFrame() const { return base_link_name_; }
+inline std::vector<std::string> IKFastInvKin::getTipLinkNames() const { return { tip_link_name_ }; }
+inline std::string IKFastInvKin::getSolverName() const { return solver_name_; }
 
 }  // namespace tesseract_kinematics
 

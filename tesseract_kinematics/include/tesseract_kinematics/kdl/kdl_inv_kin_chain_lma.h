@@ -37,6 +37,7 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/inverse_kinematics.h>
+#include <tesseract_kinematics/core/types.h>
 #include <tesseract_kinematics/kdl/kdl_utils.h>
 
 #ifdef SWIG
@@ -45,6 +46,8 @@ TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 namespace tesseract_kinematics
 {
+static const std::string KDL_INV_KIN_CHAIN_LMA_SOLVER_NAME = "KDLInvKinChainLMA";
+
 /**
  * @brief KDL Inverse kinematic chain implementation.
  */
@@ -57,95 +60,54 @@ public:
 
   using Ptr = std::shared_ptr<KDLInvKinChainLMA>;
   using ConstPtr = std::shared_ptr<const KDLInvKinChainLMA>;
+  using UPtr = std::unique_ptr<KDLInvKinChainLMA>;
+  using ConstUPtr = std::unique_ptr<const KDLInvKinChainLMA>;
 
-  KDLInvKinChainLMA() = default;
   ~KDLInvKinChainLMA() override = default;
-  KDLInvKinChainLMA(const KDLInvKinChainLMA&) = delete;
-  KDLInvKinChainLMA& operator=(const KDLInvKinChainLMA&) = delete;
-  KDLInvKinChainLMA(KDLInvKinChainLMA&&) = delete;
-  KDLInvKinChainLMA& operator=(KDLInvKinChainLMA&&) = delete;
-
-  InverseKinematics::Ptr clone() const override;
-
-  bool update() override;
-
-  IKSolutions calcInvKin(const Eigen::Isometry3d& pose, const Eigen::Ref<const Eigen::VectorXd>& seed) const override;
-
-  IKSolutions calcInvKin(const Eigen::Isometry3d& pose,
-                         const Eigen::Ref<const Eigen::VectorXd>& seed,
-                         const std::string& link_name) const override;
-
-  bool checkJoints(const Eigen::Ref<const Eigen::VectorXd>& vec) const override;
-
-  const std::vector<std::string>& getJointNames() const override;
-
-  const std::vector<std::string>& getLinkNames() const override;
-
-  const std::vector<std::string>& getActiveLinkNames() const override;
-
-  const tesseract_common::KinematicLimits& getLimits() const override;
-
-  void setLimits(tesseract_common::KinematicLimits limits) override;
-
-  std::vector<Eigen::Index> getRedundancyCapableJointIndices() const override;
-
-  unsigned int numJoints() const override;
-
-  const std::string& getBaseLinkName() const override;
-
-  const std::string& getTipLinkName() const override;
-
-  const std::string& getName() const override;
-
-  const std::string& getSolverName() const override;
-
-  tesseract_scene_graph::SceneGraph::ConstPtr getSceneGraph() const;
+  KDLInvKinChainLMA(const KDLInvKinChainLMA& other);
+  KDLInvKinChainLMA& operator=(const KDLInvKinChainLMA& other);
+  KDLInvKinChainLMA(KDLInvKinChainLMA&&) = default;
+  KDLInvKinChainLMA& operator=(KDLInvKinChainLMA&&) = default;
 
   /**
-   * @brief Initializes Inverse Kinematics as chain
+   * @brief Construct Inverse Kinematics as chain
    * Creates a inverse kinematic chain object
    * @param scene_graph The Tesseract Scene Graph
    * @param base_link The name of the base link for the kinematic chain
    * @param tip_link The name of the tip link for the kinematic chain
-   * @param name The name of the kinematic chain
-   * @return True if init() completes successfully
+   * @param solver_name The name of the kinematic chain
    */
-  bool init(tesseract_scene_graph::SceneGraph::ConstPtr scene_graph,
-            const std::string& base_link,
-            const std::string& tip_link,
-            std::string name);
+  KDLInvKinChainLMA(const tesseract_scene_graph::SceneGraph& scene_graph,
+                    const std::string& base_link,
+                    const std::string& tip_link,
+                    std::string solver_name = KDL_INV_KIN_CHAIN_LMA_SOLVER_NAME);
 
   /**
-   * @brief Initializes Inverse Kinematics as chain
+   * @brief Construct Inverse Kinematics as chain
    * Creates a inverse kinematic chain object from sequential chains
    * @param scene_graph The Tesseract Scene Graph
    * @param chains A vector of kinematics chains <base_link, tip_link> that get concatenated
-   * @param name The name of the kinematic chain
-   * @return True if init() completes successfully
+   * @param solver_name The solver name of the kinematic chain
    */
-  bool init(tesseract_scene_graph::SceneGraph::ConstPtr scene_graph,
-            const std::vector<std::pair<std::string, std::string> >& chains,
-            std::string name);
+  KDLInvKinChainLMA(const tesseract_scene_graph::SceneGraph& scene_graph,
+                    const std::vector<std::pair<std::string, std::string> >& chains,
+                    std::string solver_name = KDL_INV_KIN_CHAIN_LMA_SOLVER_NAME);
 
-  /**
-   * @brief Checks if kinematics has been initialized
-   * @return True if init() has completed successfully
-   */
-  bool checkInitialized() const;
+  IKSolutions calcInvKin(const tesseract_common::TransformMap& tip_link_poses,
+                         const Eigen::Ref<const Eigen::VectorXd>& seed) const override final;
+
+  std::vector<std::string> getJointNames() const override final;
+  Eigen::Index numJoints() const override final;
+  std::string getBaseLinkName() const override final;
+  std::string getWorkingFrame() const override final;
+  std::vector<std::string> getTipLinkNames() const override final;
+  std::string getSolverName() const override final;
+  InverseKinematics::UPtr clone() const override final;
 
 private:
-  bool initialized_{ false };                               /**< Identifies if the object has been initialized */
-  tesseract_scene_graph::SceneGraph::ConstPtr scene_graph_; /**< Tesseract Scene Graph */
-  KDLChainData kdl_data_;                                   /**< KDL data parsed from Scene Graph */
-  std::string name_;                                        /**< Name of the kinematic chain */
-  std::string solver_name_{ "KDLInvKinChainLMA" };          /**< Name of this solver */
-  std::unique_ptr<KDL::ChainIkSolverPos_LMA> ik_solver_;    /**< KDL Inverse kinematic solver */
-
-  /**
-   * @brief This used by the clone method
-   * @return True if init() completes successfully
-   */
-  bool init(const KDLInvKinChainLMA& kin);
+  KDLChainData kdl_data_;                                        /**< @brief KDL data parsed from Scene Graph */
+  std::unique_ptr<KDL::ChainIkSolverPos_LMA> ik_solver_;         /**< @brief KDL Inverse kinematic solver */
+  std::string solver_name_{ KDL_INV_KIN_CHAIN_LMA_SOLVER_NAME }; /**< @brief Name of this solver */
 
   /** @brief calcFwdKin helper function */
   IKSolutions calcInvKinHelper(const Eigen::Isometry3d& pose,

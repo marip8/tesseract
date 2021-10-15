@@ -33,49 +33,16 @@ TESSERACT_COMMON_IGNORE_WARNINGS_PUSH
 #include <Eigen/Geometry>
 #include <Eigen/Eigenvalues>
 #include <console_bridge/console.h>
-#include <tesseract_srdf/kinematics_information.h>
 #include <tesseract_scene_graph/graph.h>
 TESSERACT_COMMON_IGNORE_WARNINGS_POP
 
 #include <tesseract_kinematics/core/forward_kinematics.h>
+#include <tesseract_kinematics/core/kinematic_group.h>
 
 namespace tesseract_kinematics
 {
 template <typename FloatType>
 using VectorX = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
-
-/**
- * @brief Change the base coordinate system of the jacobian
- * @param jacobian The current Jacobian which gets modified in place
- * @param change_base The transform from the desired frame to the current base frame of the jacobian
- */
-inline static void jacobianChangeBase(Eigen::Ref<Eigen::MatrixXd> jacobian, const Eigen::Isometry3d& change_base)
-{
-  assert(jacobian.rows() == 6);
-  for (int i = 0; i < jacobian.cols(); i++)
-  {
-    jacobian.col(i).head(3) = change_base.linear() * jacobian.col(i).head(3);
-    jacobian.col(i).tail(3) = change_base.linear() * jacobian.col(i).tail(3);
-  }
-}
-
-/**
- * @brief Change the reference point of the jacobian
- * @param jacobian The current Jacobian which gets modified in place
- * @param ref_point Is expressed in the same base frame of the jacobian
- *                  and is a vector from the old point to the new point.
- */
-inline static void jacobianChangeRefPoint(Eigen::Ref<Eigen::MatrixXd> jacobian,
-                                          const Eigen::Ref<const Eigen::Vector3d>& ref_point)
-{
-  assert(jacobian.rows() == 6);
-  for (int i = 0; i < jacobian.cols(); i++)
-  {
-    jacobian(0, i) += jacobian(4, i) * ref_point(2) - jacobian(5, i) * ref_point(1);
-    jacobian(1, i) += jacobian(5, i) * ref_point(0) - jacobian(3, i) * ref_point(2);
-    jacobian(2, i) += jacobian(3, i) * ref_point(1) - jacobian(4, i) * ref_point(0);
-  }
-}
 
 /**
  * @brief Numerically calculate a jacobian. This is mainly used for testing
@@ -93,15 +60,16 @@ inline static void numericalJacobian(Eigen::Ref<Eigen::MatrixXd> jacobian,
                                      const Eigen::Ref<const Eigen::Vector3d>& link_point)
 {
   Eigen::VectorXd njvals;
-  double delta = 0.001;
-  Eigen::Isometry3d pose = kin.calcFwdKin(joint_values, link_name);
+  double delta = 1e-8;
+  tesseract_common::TransformMap poses = kin.calcFwdKin(joint_values);
+  Eigen::Isometry3d pose = poses[link_name];
   pose = change_base * pose;
 
   for (int i = 0; i < static_cast<int>(joint_values.size()); ++i)
   {
     njvals = joint_values;
     njvals[i] += delta;
-    Eigen::Isometry3d updated_pose = kin.calcFwdKin(njvals, link_name);
+    Eigen::Isometry3d updated_pose = kin.calcFwdKin(njvals)[link_name];
     updated_pose = change_base * updated_pose;
 
     Eigen::Vector3d temp = pose * link_point;
@@ -110,14 +78,50 @@ inline static void numericalJacobian(Eigen::Ref<Eigen::MatrixXd> jacobian,
     jacobian(1, i) = (temp2.y() - temp.y()) / delta;
     jacobian(2, i) = (temp2.z() - temp.z()) / delta;
 
-    Eigen::AngleAxisd r12(pose.rotation().transpose() * updated_pose.rotation());  // rotation from p1 -> p2
-    double theta = r12.angle();
-    theta = copysign(fmod(fabs(theta), 2.0 * M_PI), theta);
-    if (theta < -M_PI)
-      theta = theta + 2. * M_PI;
-    if (theta > M_PI)
-      theta = theta - 2. * M_PI;
-    Eigen::VectorXd omega = (pose.rotation() * r12.axis() * theta) / delta;
+    Eigen::VectorXd omega = (pose.rotation() * tesseract_common::calcRotationalError(pose.rotation().transpose() *
+                                                                                     updated_pose.rotation())) /
+                            delta;
+    jacobian(3, i) = omega(0);
+    jacobian(4, i) = omega(1);
+    jacobian(5, i) = omega(2);
+  }
+}
+
+/**
+ * @brief Numerically calculate a jacobian. This is mainly used for testing
+ * @param jacobian (Return) The jacobian which gets filled out.
+ * @param joint_group          The joint group object
+ * @param joint_values The joint values for which to calculate the jacobian
+ * @param link_name    The link_name for which the jacobian should be calculated
+ * @param link_point   The point on the link for which to calculate the jacobian
+ */
+inline static void numericalJacobian(Eigen::Ref<Eigen::MatrixXd> jacobian,
+                                     const JointGroup& joint_group,
+                                     const Eigen::Ref<const Eigen::VectorXd>& joint_values,
+                                     const std::string& link_name,
+                                     const Eigen::Ref<const Eigen::Vector3d>& link_point)
+{
+  Eigen::VectorXd njvals;
+  double delta = 1e-8;
+  tesseract_common::TransformMap poses = joint_group.calcFwdKin(joint_values);
+  Eigen::Isometry3d pose = poses[link_name];
+
+  for (int i = 0; i < static_cast<int>(joint_values.size()); ++i)
+  {
+    njvals = joint_values;
+    njvals[i] += delta;
+    tesseract_common::TransformMap updated_poses = joint_group.calcFwdKin(njvals);
+    Eigen::Isometry3d updated_pose = updated_poses[link_name];
+
+    Eigen::Vector3d temp = pose * link_point;
+    Eigen::Vector3d temp2 = updated_pose * link_point;
+    jacobian(0, i) = (temp2.x() - temp.x()) / delta;
+    jacobian(1, i) = (temp2.y() - temp.y()) / delta;
+    jacobian(2, i) = (temp2.z() - temp.z()) / delta;
+
+    Eigen::VectorXd omega = (pose.rotation() * tesseract_common::calcRotationalError(pose.rotation().transpose() *
+                                                                                     updated_pose.rotation())) /
+                            delta;
     jacobian(3, i) = omega(0);
     jacobian(4, i) = omega(1);
     jacobian(5, i) = omega(2);
@@ -332,69 +336,69 @@ inline Manipulability calcManipulability(const Eigen::Ref<const Eigen::MatrixXd>
   return manip;
 }
 
+///**
+// * @brief Create a kinematics map from the srdf model
+// * @param scene_graph Tesseract Scene Graph
+// * @param kinematics_information Tesseract Kinematics Information
+// * @return Kinematics map between group name and kinematics object
+// */
+// template <class Chain_T, class Tree_T>
+// ForwardKinematicsConstPtrMap createKinematicsMap(const tesseract_scene_graph::SceneGraph::ConstPtr& scene_graph,
+//                                                 const tesseract_srdf::KinematicsInformation& kinematics_information)
+//{
+//  ForwardKinematicsConstPtrMap manipulators;
+//  for (const auto& group : kinematics_information.chain_groups)
+//  {
+//    if (!group.second.empty())
+//    {
+//      if (manipulators.find(group.first) == manipulators.end())
+//      {
+//        std::shared_ptr<Chain_T> manip{ std::make_shared<Chain_T>() };
+//        if (!manip->init(scene_graph, group.second, group.first))
+//        {
+//          CONSOLE_BRIDGE_logError("Failed to create kinematic chaing for manipulator %s!", group.first);
+//        }
+//        else
+//        {
+//          manipulators.insert(std::make_pair(group.first, manip));
+//        }
+//      }
+//    }
+//  }
+
+//  for (const auto& group : kinematics_information.joint_groups)
+//  {
+//    if (!group.second.empty())
+//    {
+//      if (manipulators.find(group.first) == manipulators.end())
+//      {
+//        std::shared_ptr<Tree_T> manip{ std::make_shared<Tree_T>() };
+//        if (!manip->init(scene_graph, group.second, group.first))
+//        {
+//          CONSOLE_BRIDGE_logError("Failed to create kinematic chaing for manipulator %s!", group.first);
+//        }
+//        else
+//        {
+//          manipulators.insert(std::make_pair(group.first, manip));
+//        }
+//      }
+//    }
+//  }
+
+//  for (const auto& group : kinematics_information.link_groups)
+//  {
+//    // TODO: Need to add other options
+//    if (!group.second.empty())
+//    {
+//      CONSOLE_BRIDGE_logError("Link groups are currently not supported!");
+//    }
+//  }
+
+//  return manipulators;
+//}
+
 /**
- * @brief Create a kinematics map from the srdf model
- * @param scene_graph Tesseract Scene Graph
- * @param kinematics_information Tesseract Kinematics Information
- * @return Kinematics map between group name and kinematics object
- */
-template <class Chain_T, class Tree_T>
-ForwardKinematicsConstPtrMap createKinematicsMap(const tesseract_scene_graph::SceneGraph::ConstPtr& scene_graph,
-                                                 const tesseract_srdf::KinematicsInformation& kinematics_information)
-{
-  ForwardKinematicsConstPtrMap manipulators;
-  for (const auto& group : kinematics_information.chain_groups)
-  {
-    if (!group.second.empty())
-    {
-      if (manipulators.find(group.first) == manipulators.end())
-      {
-        std::shared_ptr<Chain_T> manip{ std::make_shared<Chain_T>() };
-        if (!manip->init(scene_graph, group.second, group.first))
-        {
-          CONSOLE_BRIDGE_logError("Failed to create kinematic chaing for manipulator %s!", group.first);
-        }
-        else
-        {
-          manipulators.insert(std::make_pair(group.first, manip));
-        }
-      }
-    }
-  }
-
-  for (const auto& group : kinematics_information.joint_groups)
-  {
-    if (!group.second.empty())
-    {
-      if (manipulators.find(group.first) == manipulators.end())
-      {
-        std::shared_ptr<Tree_T> manip{ std::make_shared<Tree_T>() };
-        if (!manip->init(scene_graph, group.second, group.first))
-        {
-          CONSOLE_BRIDGE_logError("Failed to create kinematic chaing for manipulator %s!", group.first);
-        }
-        else
-        {
-          manipulators.insert(std::make_pair(group.first, manip));
-        }
-      }
-    }
-  }
-
-  for (const auto& group : kinematics_information.link_groups)
-  {
-    // TODO: Need to add other options
-    if (!group.second.empty())
-    {
-      CONSOLE_BRIDGE_logError("Link groups are currently not supported!");
-    }
-  }
-
-  return manipulators;
-}
-
-/**
- * @brief This a recursive function for caculating all permutations of the redundant solutions.
+ * @brief This a recursive function for calculating all permutations of the redundant solutions.
  * @details This should not be used directly, use getRedundantSolutions function.
  */
 template <typename FloatType>
@@ -404,7 +408,7 @@ inline void getRedundantSolutionsHelper(std::vector<VectorX<FloatType>>& redunda
                                         std::vector<Eigen::Index>::const_iterator current_index,
                                         std::vector<Eigen::Index>::const_iterator end_index)
 {
-  double val;
+  double val{ 0 };
   for (; current_index != end_index; ++current_index)
   {
     if (std::isinf(limits(*current_index, 0)))
@@ -491,7 +495,7 @@ inline std::vector<VectorX<FloatType>> getRedundantSolutions(const Eigen::Ref<co
     if (idx >= sol.size())
     {
       std::stringstream ss;
-      ss << "Redunant joint index " << idx << " is greater than or equal to the joint state size (" << sol.size()
+      ss << "Redundant joint index " << idx << " is greater than or equal to the joint state size (" << sol.size()
          << ")";
       throw std::runtime_error(ss.str());
     }
