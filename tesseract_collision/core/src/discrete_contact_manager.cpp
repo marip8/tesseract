@@ -24,12 +24,12 @@
  * limitations under the License.
  */
 
-#include <tesseract_collision/core/discrete_contact_manager.h>
+#include <tesseract_collision/core/contact_manager.h>
 #include <tesseract_collision/core/utils.h>
 
 namespace tesseract_collision
 {
-void DiscreteContactManager::applyContactManagerConfig(const ContactManagerConfig& config)
+void ContactManager::applyContactManagerConfig(const ContactManagerConfig& config)
 {
   setCollisionMarginData(config.margin_data, config.margin_data_override_type);
   applyIsContactAllowedFnOverride(*this, config.acm, config.acm_override_type);

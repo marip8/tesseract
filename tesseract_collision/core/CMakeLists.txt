@@ -4,7 +4,6 @@ add_library(
   src/common.cpp
   src/types.cpp
   src/contact_managers_plugin_factory.cpp
-  src/continuous_contact_manager.cpp
   src/discrete_contact_manager.cpp
   src/utils.cpp)
 target_link_libraries(
