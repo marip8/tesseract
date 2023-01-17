@@ -829,7 +829,7 @@ tesseract_collision::ContinuousContactManager::UPtr Environment::getContinuousCo
   {  // Clone cached manager if exists
     std::shared_lock<std::shared_mutex> continuous_lock(continuous_manager_mutex_);
     if (continuous_manager_)
-      return continuous_manager_->clone();
+      return continuous_manager_->cloneContinuous();
   }
 
   {  // Try to create the default plugin
@@ -843,7 +843,7 @@ tesseract_collision::ContinuousContactManager::UPtr Environment::getContinuousCo
     }
   }
 
-  return continuous_manager_->clone();
+  return continuous_manager_->cloneContinuous();
 }
 
 void Environment::clearCachedContinuousContactManager() const
@@ -1206,7 +1206,7 @@ Environment::UPtr Environment::clone() const
   }
   if (continuous_manager_)
   {
-    cloned_env->continuous_manager_ = continuous_manager_->clone();
+    cloned_env->continuous_manager_ = continuous_manager_->cloneContinuous();
     cloned_env->continuous_manager_->setIsContactAllowedFn(cloned_env->is_contact_allowed_fn_);
   }
 
