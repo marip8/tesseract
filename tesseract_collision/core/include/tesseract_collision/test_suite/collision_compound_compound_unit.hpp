@@ -14,8 +14,7 @@ namespace tesseract_collision::test_suite
 {
 namespace detail
 {
-template <class T>
-inline void addCollisionObjects(T& checker)
+inline void addCollisionObjects(ContactManager& checker)
 {
   /////////////////////////////////////////////////////////////////
   // Add Octomap
@@ -69,7 +68,7 @@ inline void addCollisionObjects(T& checker)
   }
 }
 
-inline void runTestCompound(DiscreteContactManager& checker)
+inline void runTestCompound(ContactManager& checker)
 {
   //////////////////////////////////////
   // Test when object is in collision
@@ -98,54 +97,17 @@ inline void runTestCompound(DiscreteContactManager& checker)
   }
 }
 
-inline void runTestCompound(ContinuousContactManager& checker)
-{
-  //////////////////////////////////////
-  // Test when object is in collision
-  //////////////////////////////////////
-  checker.setActiveCollisionObjects({ "octomap1_link" });
-  checker.setCollisionMarginData(CollisionMarginData(0.25));
-  EXPECT_NEAR(checker.getCollisionMarginData().getMaxCollisionMargin(), 0.25, 1e-5);
-
-  // Set the collision object transforms
-  Eigen::Isometry3d start_pos, end_pos;
-  start_pos = Eigen::Isometry3d::Identity();
-  end_pos = Eigen::Isometry3d::Identity();
-  start_pos.translation() = Eigen::Vector3d(0, -2.0, 0);
-  end_pos.translation() = Eigen::Vector3d(0, 2.0, 0);
-  checker.setCollisionObjectsTransform("octomap1_link", start_pos, end_pos);
-
-  // Perform collision check
-  ContactResultMap result;
-  checker.contactTest(result, ContactRequest(ContactTestType::ALL));
-
-  ContactResultVector result_vector;
-  flattenMoveResults(std::move(result), result_vector);
-
-  EXPECT_TRUE(!result_vector.empty());
-  for (const auto& cr : result_vector)
-  {
-    EXPECT_NEAR(cr.distance, 0.20, 0.001);
-  }
-}
 }  // namespace detail
 
-inline void runTest(ContinuousContactManager& checker)
+inline void runTest(ContactManager& checker)
 {
-  detail::addCollisionObjects<ContinuousContactManager>(checker);
+  detail::addCollisionObjects(checker);
   detail::runTestCompound(checker);
 
-  ContinuousContactManager::Ptr cloned_checker = checker.clone();
+  ContactManager::Ptr cloned_checker = checker.clone();
   detail::runTestCompound(*cloned_checker);
 }
 
-inline void runTest(DiscreteContactManager& checker)
-{
-  detail::addCollisionObjects<DiscreteContactManager>(checker);
-  detail::runTestCompound(checker);
-
-  DiscreteContactManager::Ptr cloned_checker = checker.clone();
-  detail::runTestCompound(*cloned_checker);
-}
 }  // namespace tesseract_collision::test_suite
+
 #endif  // TESSERACT_COLLISION_COLLISION_COMPOUND_COMPOUND_UNIT_HPP
