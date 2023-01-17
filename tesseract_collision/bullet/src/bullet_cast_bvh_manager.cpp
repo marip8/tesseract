@@ -82,7 +82,7 @@ BulletCastBVHManager::~BulletCastBVHManager()
 
 std::string BulletCastBVHManager::getName() const { return name_; }
 
-ContinuousContactManager::UPtr BulletCastBVHManager::clone() const
+ContinuousContactManager::UPtr BulletCastBVHManager::cloneContinuous() const
 {
   auto manager = std::make_unique<BulletCastBVHManager>();
 

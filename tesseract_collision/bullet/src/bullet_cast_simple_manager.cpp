@@ -62,7 +62,7 @@ BulletCastSimpleManager::BulletCastSimpleManager(std::string name) : name_(std::
 
 std::string BulletCastSimpleManager::getName() const { return name_; }
 
-ContinuousContactManager::UPtr BulletCastSimpleManager::clone() const
+ContinuousContactManager::UPtr BulletCastSimpleManager::cloneContinuous() const
 {
   auto manager = std::make_unique<BulletCastSimpleManager>();
 

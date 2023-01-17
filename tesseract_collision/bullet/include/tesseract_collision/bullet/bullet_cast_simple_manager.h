@@ -65,7 +65,7 @@ public:
 
   std::string getName() const override final;
 
-  ContinuousContactManager::UPtr clone() const override final;
+  ContinuousContactManager::UPtr cloneContinuous() const override final;
 
   bool addCollisionObject(const std::string& name,
                           const int& mask_id,
