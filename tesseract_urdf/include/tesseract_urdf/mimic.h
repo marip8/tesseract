@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* MIMIC_ELEMENT_NAME = "mimic";
+static const char* MIMIC_ELEMENT_NAME = "mimic";  // NOLINT
 
 /**
  * @brief Parse xml element mimic

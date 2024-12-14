@@ -42,7 +42,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* OCTREE_ELEMENT_NAME = "tesseract:octree";
+static const char* OCTREE_ELEMENT_NAME = "tesseract:octree";  // NOLINT
 
 /**
  * @brief Parse xml element octree

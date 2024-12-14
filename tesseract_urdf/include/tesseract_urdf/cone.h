@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* CONE_ELEMENT_NAME = "tesseract:cone";
+static const char* CONE_ELEMENT_NAME = "tesseract:cone";  // NOLINT
 
 /**
  * @brief Parse a xml cone element

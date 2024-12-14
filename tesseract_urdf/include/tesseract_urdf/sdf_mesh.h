@@ -42,7 +42,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* SDF_MESH_ELEMENT_NAME = "tesseract:sdf_mesh";
+static const char* SDF_MESH_ELEMENT_NAME = "tesseract:sdf_mesh";  // NOLINT
 
 /**
  * @brief Parse xml element sdf_mesh

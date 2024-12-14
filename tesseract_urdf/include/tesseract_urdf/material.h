@@ -42,7 +42,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* MATERIAL_ELEMENT_NAME = "material";
+static const char* MATERIAL_ELEMENT_NAME = "material";  // NOLINT
 
 /**
  * @brief Parse xml element material

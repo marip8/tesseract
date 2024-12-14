@@ -43,7 +43,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* LINK_ELEMENT_NAME = "link";
+static const char* LINK_ELEMENT_NAME = "link";  // NOLINT
 
 /**
  * @brief Parse xml element link

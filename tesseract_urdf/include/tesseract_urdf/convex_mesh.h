@@ -43,7 +43,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* CONVEX_MESH_ELEMENT_NAME = "tesseract:convex_mesh";
+static const char* CONVEX_MESH_ELEMENT_NAME = "tesseract:convex_mesh";  // NOLINT
 
 /**
  * @brief Parse xml element convex_mesh

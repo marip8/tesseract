@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* JOINT_ELEMENT_NAME = "joint";
+static const char* JOINT_ELEMENT_NAME = "joint";  // NOLINT
 
 /**
  * @brief Parse xml element joint

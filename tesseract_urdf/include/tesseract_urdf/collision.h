@@ -43,7 +43,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* COLLISION_ELEMENT_NAME = "collision";
+static const char* COLLISION_ELEMENT_NAME = "collision";  // NOLINT
 
 /**
  * @brief Parse xml element collision

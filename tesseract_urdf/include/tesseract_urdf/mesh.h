@@ -43,7 +43,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* MESH_ELEMENT_NAME = "mesh";
+static const char* MESH_ELEMENT_NAME = "mesh";  // NOLINT
 
 /**
  * @brief Parse xml element mesh

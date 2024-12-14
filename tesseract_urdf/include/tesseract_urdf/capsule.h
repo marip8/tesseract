@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* CAPSULE_ELEMENT_NAME = "tesseract:capsule";
+static const char* CAPSULE_ELEMENT_NAME = "tesseract:capsule";  // NOLINT
 
 /**
  * @brief Parse a xml capsule element

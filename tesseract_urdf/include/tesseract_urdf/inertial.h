@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* INERTIAL_ELEMENT_NAME = "inertial";
+static const char* INERTIAL_ELEMENT_NAME = "inertial";  // NOLINT
 
 /**
  * @brief Parse xml element inertial

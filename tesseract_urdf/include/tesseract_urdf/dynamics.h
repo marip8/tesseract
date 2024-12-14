@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* DYNAMICS_ELEMENT_NAME = "dynamics";
+static const char* DYNAMICS_ELEMENT_NAME = "dynamics";  // NOLINT
 
 /**
  * @brief Parse a xml dynamics element

@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* CYLINDER_ELEMENT_NAME = "cylinder";
+static const char* CYLINDER_ELEMENT_NAME = "cylinder";  // NOLINT
 
 /**
  * @brief Parse a xml cylinder element

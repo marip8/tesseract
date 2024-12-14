@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* SPHERE_ELEMENT_NAME = "sphere";
+static const char* SPHERE_ELEMENT_NAME = "sphere";  // NOLINT
 
 /**
  * @brief Parse a xml sphere element

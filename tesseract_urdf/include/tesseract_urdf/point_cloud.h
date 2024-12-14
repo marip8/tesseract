@@ -42,7 +42,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* POINT_CLOUD_ELEMENT_NAME = "tesseract:point_cloud";
+static const char* POINT_CLOUD_ELEMENT_NAME = "tesseract:point_cloud";  // NOLINT
 
 /**
  * @brief Parse xml element point_cloud

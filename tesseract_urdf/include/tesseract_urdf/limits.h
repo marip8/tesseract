@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* LIMITS_ELEMENT_NAME = "limit";
+static const char* LIMITS_ELEMENT_NAME = "limit";  // NOLINT
 
 /**
  * @brief Parse xml element limits

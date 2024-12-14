@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* CALIBRATION_ELEMENT_NAME = "calibration";
+static const char* CALIBRATION_ELEMENT_NAME = "calibration";  // NOLINT
 
 /**
  * @brief Parse a xml calibration element

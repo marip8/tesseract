@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* SAFETY_CONTROLLER_ELEMENT_NAME = "safety_controller";
+static const char* SAFETY_CONTROLLER_ELEMENT_NAME = "safety_controller";  // NOLINT
 
 /**
  * @brief Parse xml element safety_controller

@@ -43,7 +43,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* GEOMETRY_ELEMENT_NAME = "geometry";
+static const char* GEOMETRY_ELEMENT_NAME = "geometry";  // NOLINT
 
 /**
  * @brief Parse xml element geometry

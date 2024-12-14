@@ -42,7 +42,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* OCTOMAP_ELEMENT_NAME = "tesseract:octomap";
+static const char* OCTOMAP_ELEMENT_NAME = "tesseract:octomap";  // NOLINT
 
 /**
  * @brief Parse xml element octomap

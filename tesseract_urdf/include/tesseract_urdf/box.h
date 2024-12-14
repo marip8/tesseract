@@ -41,7 +41,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* BOX_ELEMENT_NAME = "box";
+static const char* BOX_ELEMENT_NAME = "box";  // NOLINT
 
 /**
  * @brief Parse a xml box element

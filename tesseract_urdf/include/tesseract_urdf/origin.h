@@ -39,7 +39,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* ORIGIN_ELEMENT_NAME = "origin";
+static const char* ORIGIN_ELEMENT_NAME = "origin";  // NOLINT
 
 /**
  * @brief Parse xml element origin

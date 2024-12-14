@@ -44,7 +44,7 @@ class XMLDocument;
 
 namespace tesseract_urdf
 {
-static const char* VISUAL_ELEMENT_NAME = "visual";
+static const char* VISUAL_ELEMENT_NAME = "visual";  // NOLINT
 
 /**
  * @brief Parse xml element visual
